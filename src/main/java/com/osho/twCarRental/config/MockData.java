@@ -10,11 +10,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Configuration
 public class MockData {
@@ -27,26 +29,35 @@ public class MockData {
         return args -> {
             Customer customer1 = new Customer(
                     "12345",
-                    LocalDate.of(1970, Month.JULY, 7), "dodu@gmail.com",
+                    LocalDate.of(1970, Month.JULY, 7),
+                    "dodu@gmail.com",
                     "Donald",
                     "Duck",
                     "First street 1 Stockholm"
             );
             Customer customer2 = new Customer(
                     "23456",
-                    LocalDate.of(1980, Month.AUGUST, 8), "mimo1@gmail.com",
+                    LocalDate.of(1980, Month.AUGUST, 8),
+                    "mimo1@gmail.com",
                     "Mickey",
                     "Mouse",
                     "Second street 10 Stockholm"
             );
             Customer customer3 = new Customer(
                     "34567",
-                    LocalDate.of(1990, Month.SEPTEMBER, 9), "mimo2@gmail.com",
+                    LocalDate.of(1990, Month.SEPTEMBER, 9),
+                    "mimo2@gmail.com",
                     "Minnie",
                     "Mouse",
                     "Second street 10 Stockholm"
             );
             // Save customer mock data
+            // Temporary method for not adding existing record (when ddl=update)
+//            ArrayList<Customer> tempCustList = new ArrayList<Customer>();
+//            Optional<Customer> tempCust1 = customerRepository.findByEmail("mimo2@gmail.com");
+//            if ()
+
+
             customerRepository.saveAll(List.of(customer1, customer2, customer3));
 
 
@@ -81,15 +92,16 @@ public class MockData {
                     LocalDateTime.of(2022, Month.AUGUST, 1, 14, 15),
                     LocalDate.of(2022, Month.DECEMBER, 15),
                     LocalDate.of(2022, Month.DECEMBER, 19),
-                    customer1.getId()
-//                    List.of(car1, car2)
+                    customer1.getId(),
+                    List.of(car1, car2, car3)
 //                    new ArrayList<>(List.of(car1, car2))
             );
             Order order2 = new Order(
                     LocalDateTime.of(2022, Month.AUGUST, 5, 12, 45),
                     LocalDate.of(2023, Month.JANUARY, 2),
                     LocalDate.of(2023, Month.JANUARY, 8),
-                    customer1.getId()
+                    customer1.getId(),
+                    List.of(car3)
 //                    new ArrayList<>(List.of(car3))
             );
             // Save order mock data

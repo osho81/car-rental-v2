@@ -18,24 +18,24 @@ public class Order {
 //    @Column(name = "orderid")
     private Long id;
 
-    @Column(name = "orderdate")
+    @Column(name = "order_date")
     private LocalDateTime orderDate;
 
-    @Column(name = "firstrentalday")
+    @Column(name = "first_rental_day")
     private LocalDate firstRentalDay;
 
-    @Column(name = "lastrentalday")
+    @Column(name = "last_rental_day")
     private LocalDate lastRentalDay;
 
-    @Column(name = "customerid")
+    @Column(name = "customer_id")
     private int customerId; // One customer per order
 
     // Creates new table for multiple mapping between cars and orders
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.DETACH)
     @JoinTable(
-            name = "orderedcars",
-            joinColumns = @JoinColumn(name = "carid", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "orderid", referencedColumnName = "id"))
+            name = "ordered_cars",
+            joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "car_id", referencedColumnName = "id"))
     private List<Car> orderedCars = new ArrayList<>();
 
     @Transient // To calculate price etc., without storing number of days
@@ -52,14 +52,14 @@ public class Order {
         this.customerId = customerId;
         this.orderedCars = orderedCars;
     }
-    public Order(LocalDateTime orderDate, LocalDate firstRentalDay, LocalDate lastRentalDay,
-                 int customerId) {
-        this.orderDate = orderDate;
-        this.firstRentalDay = firstRentalDay;
-        this.lastRentalDay = lastRentalDay;
-        this.customerId = customerId;
-        this.orderedCars = orderedCars;
-    }
+//    public Order(LocalDateTime orderDate, LocalDate firstRentalDay, LocalDate lastRentalDay,
+//                 int customerId) {
+//        this.orderDate = orderDate;
+//        this.firstRentalDay = firstRentalDay;
+//        this.lastRentalDay = lastRentalDay;
+//        this.customerId = customerId;
+//        this.orderedCars = orderedCars;
+//    }
 
     public Order(Long id, LocalDateTime orderDate, LocalDate firstRentalDay, LocalDate lastRentalDay,
                  int customerId, List<Car> orderedCars) {

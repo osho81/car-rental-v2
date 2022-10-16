@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "customers")
 public class Customer {
 
     @Id
@@ -16,16 +16,16 @@ public class Customer {
     @Column(name = "ssn", nullable = false)
     private String ssn; // Social Security Number
 
-    @Column(name = "dateofbirth")
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
     @Column(name = "email")
     private String email; // Unique email used as username
 
-    @Column(name = "fname")
+    @Column(name = "first_name")
     private String fName;
 
-    @Column(name = "lname")
+    @Column(name = "last_name")
     private String lName;
 
     @Column(name = "address")

@@ -1,10 +1,11 @@
 package com.osho.twCarRental.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "car")
+@Table(name = "cars")
 public class Car {
 
     @Id
@@ -21,15 +22,16 @@ public class Car {
     @Column(name = "type")
     private String type; // SUV, van, sedan
 
-    @Column(name = "modelyear")
+    @Column(name = "model_year")
     private int modelYear;
 
-    @Column(name = "dailysek")
+    @Column(name = "daily_sek")
     private double dailySek; // SEK by default
 
     // Many cars can also be in many orders, and vice versa
+    // (Refer to variable name orderedCars in Order class, not column name in this case)
     @ManyToMany(mappedBy = "orderedCars")
-    private List<Order> carOrders;
+    private List<Order> carOrders = new ArrayList<>();
 
     public Car() {
     }
