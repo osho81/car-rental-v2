@@ -30,7 +30,7 @@ public class Car {
 
     // Many cars can also be in many orders, and vice versa
     // (Refer to variable name orderedCars in Order class, not column name in this case)
-    @ManyToMany(mappedBy = "orderedCars")
+    @OneToMany(mappedBy = "carId")
     private List<Order> carOrders = new ArrayList<>();
 
     public Car() {

@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @Entity
 @Table(name = "orders") // "order" is reserved by sql
 public class Order {
@@ -16,7 +18,10 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Column(name = "orderid")
-    private Long id;
+    private int id;
+
+    @Column(name = "order_nr")
+    private String orderNr;
 
     @Column(name = "order_date")
     private LocalDateTime orderDate;
@@ -27,16 +32,22 @@ public class Order {
     @Column(name = "last_rental_day")
     private LocalDate lastRentalDay;
 
+    @Column(name = "price")
+    private double price;
+
     @Column(name = "customer_id")
     private int customerId; // One customer per order
 
-    // Creates new table for multiple mapping between cars and orders
-    @ManyToMany(cascade = CascadeType.DETACH)
-    @JoinTable(
-            name = "ordered_cars",
-            joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "car_id", referencedColumnName = "id"))
-    private List<Car> orderedCars = new ArrayList<>();
+//    // Don't need manyToMany between Cars and Orders
+//    @ManyToMany(cascade = CascadeType.DETACH)
+//    @JoinTable(
+//            name = "ordered_cars",
+//            joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "car_id", referencedColumnName = "id"))
+//    private List<Car> orderedCars = new ArrayList<>();
+
+    @Column(name = "car_id")
+    private int carId;
 
     @Transient // To calculate price etc., without storing number of days
     private int numberOfDays;
@@ -44,39 +55,44 @@ public class Order {
     public Order() {
     }
 
-    public Order(LocalDateTime orderDate, LocalDate firstRentalDay, LocalDate lastRentalDay,
-                 int customerId, List<Car> orderedCars) {
+    public Order(String orderNr, LocalDateTime orderDate, LocalDate firstRentalDay, LocalDate lastRentalDay,
+                 int customerId, int carId) {
+        this.orderNr = orderNr;
         this.orderDate = orderDate;
         this.firstRentalDay = firstRentalDay;
         this.lastRentalDay = lastRentalDay;
         this.customerId = customerId;
-        this.orderedCars = orderedCars;
-    }
-//    public Order(LocalDateTime orderDate, LocalDate firstRentalDay, LocalDate lastRentalDay,
-//                 int customerId) {
-//        this.orderDate = orderDate;
-//        this.firstRentalDay = firstRentalDay;
-//        this.lastRentalDay = lastRentalDay;
-//        this.customerId = customerId;
+        this.carId = carId;
 //        this.orderedCars = orderedCars;
-//    }
+        setNumberOfDays((int) DAYS.between(firstRentalDay, lastRentalDay));
+    }
 
-    public Order(Long id, LocalDateTime orderDate, LocalDate firstRentalDay, LocalDate lastRentalDay,
-                 int customerId, List<Car> orderedCars) {
+    public Order(int id, String orderNr, LocalDateTime orderDate, LocalDate firstRentalDay, LocalDate lastRentalDay,
+                 int customerId, int carId) {
         this.id = id;
+        this.orderNr = orderNr;
         this.orderDate = orderDate;
         this.firstRentalDay = firstRentalDay;
         this.lastRentalDay = lastRentalDay;
         this.customerId = customerId;
-        this.orderedCars = orderedCars;
+        this.carId = carId;
+//        this.orderedCars = orderedCars;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public String getOrderNr() {
+        return orderNr;
+    }
+
+    public void setOrderNr(String orderNr) {
+        this.orderNr = orderNr;
     }
 
     public LocalDateTime getOrderDate() {
@@ -103,6 +119,14 @@ public class Order {
         this.lastRentalDay = lastRentalDay;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double priceInclVat) {
+        this.price = priceInclVat;
+    }
+
     public int getCustomerId() {
         return customerId;
     }
@@ -113,12 +137,20 @@ public class Order {
 
     // Solves the infinite recursion problem (uncomment if needed)
 //    @JsonManagedReference
-    public List<Car> getOrderedCars() {
-        return orderedCars;
+//    public List<Car> getOrderedCars() {
+//        return orderedCars;
+//    }
+//
+//    public void setOrderedCars(List<Car> orderedCars) {
+//        this.orderedCars = orderedCars;
+//    }
+
+    public int getCarId() {
+        return carId;
     }
 
-    public void setOrderedCars(List<Car> orderedCars) {
-        this.orderedCars = orderedCars;
+    public void setCarId(int carId) {
+        this.carId = carId;
     }
 
     public int getNumberOfDays() {
