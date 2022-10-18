@@ -1,6 +1,7 @@
 package com.osho.twCarRental.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import net.bytebuddy.asm.Advice;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -49,7 +50,8 @@ public class Order {
     @Column(name = "car_id")
     private int carId;
 
-    @Transient // To calculate price etc., without storing number of days
+    //    @Transient // To calculate price etc., without storing number of days
+    @Column(name = "num_of_days")
     private int numberOfDays;
 
     public Order() {
@@ -64,7 +66,7 @@ public class Order {
         this.customerId = customerId;
         this.carId = carId;
 //        this.orderedCars = orderedCars;
-        setNumberOfDays((int) DAYS.between(firstRentalDay, lastRentalDay));
+        setNumberOfDays(firstRentalDay, lastRentalDay);
     }
 
     public Order(int id, String orderNr, LocalDateTime orderDate, LocalDate firstRentalDay, LocalDate lastRentalDay,
@@ -157,7 +159,24 @@ public class Order {
         return numberOfDays;
     }
 
-    public void setNumberOfDays(int numberOfDays) {
-        this.numberOfDays = numberOfDays;
+    public void setNumberOfDays(LocalDate firstRentalDay, LocalDate lastRentalDay) {
+        // +1 to include first day; e.g. return same day would otherwise be 0 days
+        this.numberOfDays = (int) DAYS.between(firstRentalDay, lastRentalDay) + 1;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", orderNr='" + orderNr + '\'' +
+                ", orderDate=" + orderDate +
+                ", firstRentalDay=" + firstRentalDay +
+                ", lastRentalDay=" + lastRentalDay +
+                ", price=" + price +
+                ", customerId=" + customerId +
+                ", carId=" + carId +
+                ", numberOfDays=" + numberOfDays +
+                '}';
     }
 }

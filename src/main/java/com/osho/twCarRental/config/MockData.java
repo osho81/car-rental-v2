@@ -19,6 +19,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 @Configuration
 public class MockData {
@@ -103,7 +104,7 @@ public class MockData {
                     LocalDate.of(2022, Month.DECEMBER, 15),
                     LocalDate.of(2022, Month.DECEMBER, 19),
                     customer1.getId(),
-                    2
+                    car2.getId()
 //                    List.of(car1, car2, car3)
             );
             Order order2 = new Order(
@@ -112,7 +113,7 @@ public class MockData {
                     LocalDate.of(2023, Month.JANUARY, 2),
                     LocalDate.of(2023, Month.JANUARY, 8),
                     customer3.getId(),
-                    3
+                    car3.getId()
 //                    List.of(car3)
             );
             Order order3 = new Order(
@@ -121,18 +122,15 @@ public class MockData {
                     LocalDate.of(2023, Month.JANUARY, 10),
                     LocalDate.of(2023, Month.JANUARY, 10),
                     customer3.getId(),
-                    3
+                    car3.getId()
 //                    List.of(car3)
             );
 
             // Initial method for not adding already existing Cars (when ddl=update)
-//            ArrayList<Order> mockOrderList = new ArrayList<Order>(); // Example without list
-
-
             Optional<Order> tempOrder1 = orderRepository.findByOrderNr("1001");
             if (tempOrder1.isEmpty()) {
 //                   order1.setPrice(order1.getNumberOfDays() * carRepository.findById(order1.getCarId()).get().getDailySek());
-//                   mockOrderList.add(order1);
+                   order1.setPrice(order1.getNumberOfDays() * carRepository.findById(order1.getCarId()).orElse(null).getDailySek());
                 orderRepository.save(order1); // Instead of using list for saveAll
             } else {
                 System.out.println(order1.getOrderNr() + " already exists");
@@ -140,7 +138,7 @@ public class MockData {
 
             Optional<Order> tempOrder2 = orderRepository.findByOrderNr("1002");
             if (tempOrder2.isEmpty()) {
-//                order2.setPrice(order2.getNumberOfDays() * carRepository.findById(order2.getCarId()).get().getDailySek());
+                order2.setPrice(order2.getNumberOfDays() * carRepository.findById(order2.getCarId()).get().getDailySek());
                 orderRepository.save(order2);
             } else {
                 System.out.println(order2.getOrderNr() + " already exists");
@@ -148,7 +146,7 @@ public class MockData {
 
             Optional<Order> tempOrder3 = orderRepository.findByOrderNr("1003");
             if (tempOrder3.isEmpty()) {
-//                order3.setPrice(order3.getNumberOfDays() * carRepository.findById(order3.getCarId()).get().getDailySek());
+                order3.setPrice(order3.getNumberOfDays() * carRepository.findById(order3.getCarId()).get().getDailySek());
                 orderRepository.save(order3);
             } else {
                 System.out.println(order3.getOrderNr() + " already exists");
@@ -159,28 +157,27 @@ public class MockData {
 
 
             ////-------- Add saved Orders to pertinent Cars -------////
-//            try {
-//                Optional<Car> tempCar2a = carRepository.findByRegNr("bcd234"); // In one order
-//                if (tempCar2a.isPresent()) {
-//                    tempCar2a.get().setCarOrders(List.of(orderRepository.findByOrderNr("1001").get()));
-//                    carRepository.save(tempCar2a.get());
-//                }
-//            } catch (RuntimeException e) {
-//                System.out.println("Not applicable");
-//            }
-//            try {
-//                Optional<Car> tempCar3a = carRepository.findByRegNr("cde345"); // In two orders
-//                if (tempCar3a.isPresent()) {
-//                    tempCar3a.get().setCarOrders(List.of(orderRepository.findByOrderNr("1002").get(),
-//                            orderRepository.findByOrderNr("1003").get()));
-//                    carRepository.save(tempCar3a.get());
-//                }
-//            } catch (RuntimeException e) {
-//                System.out.println("Not applicable");
-//            }
+
+            Optional<Car> tempCar2a = carRepository.findByRegNr("bcd234"); // In one order
+            if (tempCar2a.isPresent()) {
+                tempCar2a.get().setCarOrders(List.of(orderRepository.findByOrderNr("1001").get()));
+                carRepository.save(tempCar2a.get());
+            } else {
+                System.out.println("Not applicable");
+            }
+
+            Optional<Car> tempCar3a = carRepository.findByRegNr("cde345"); // In two orders
+            if (tempCar3a.isPresent()) {
+                tempCar3a.get().setCarOrders(List.of(orderRepository.findByOrderNr("1002").get(),
+                        orderRepository.findByOrderNr("1003").get()));
+                carRepository.save(tempCar3a.get());
+            } else {
+                System.out.println("Not applicable");
+            }
+
+            // Control printout
+            System.out.println(tempCar3a);
+
         };
-
     }
-
-
 }

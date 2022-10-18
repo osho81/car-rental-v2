@@ -2,6 +2,7 @@ package com.osho.twCarRental.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -110,4 +111,23 @@ public class Car {
     public void setCarOrders(List<Order> carOrders) {
         this.carOrders = carOrders;
     }
+
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", regNr='" + regNr + '\'' +
+                ", model='" + model + '\'' +
+                ", type='" + type + '\'' +
+                ", modelYear=" + modelYear +
+                ", dailySek=" + dailySek +
+//                ", carOrders=" + displayCarOrders() +
+                ", carOrders=" + Arrays.toString(carOrders.toArray()) +
+                '}';
+    }
+
+//    public String displayCarOrders() {
+//        return Arrays.toString(carOrders.toArray());
+//    }
 }
