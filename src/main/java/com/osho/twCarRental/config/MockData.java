@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor;
 
+import javax.xml.transform.sax.SAXSource;
 import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,25 +44,25 @@ public class MockData {
             // Initial method for not adding already existing Customers (when ddl=update)
             ArrayList<Customer> mockCustomerList = new ArrayList<Customer>();
 
-            try {
-                Optional<Customer> tempCust1 = customerRepository.findByEmail("dodu@gmail.com");
+
+            Optional<Customer> tempCust1 = customerRepository.findByEmail("dodu@gmail.com");
+            if (tempCust1.isEmpty()) {
                 mockCustomerList.add(customer1);
-            } catch (RuntimeException e) {
+            } else {
                 System.out.println(customer1.getEmail() + " already exists");
             }
-            try {
-                Optional<Customer> tempCust2 = customerRepository.findByEmail("mimo1@gmail.com");
+            Optional<Customer> tempCust2 = customerRepository.findByEmail("mimo1@gmail.com");
+            if (tempCust2.isEmpty()) {
                 mockCustomerList.add(customer2);
-            } catch (RuntimeException e) {
+            } else {
                 System.out.println(customer2.getEmail() + " already exists");
             }
-            try {
-                Optional<Customer> tempCust3 = customerRepository.findByEmail("mimo2@gmail.com");
+            Optional<Customer> tempCust3 = customerRepository.findByEmail("mimo2@gmail.com");
+            if (tempCust3.isEmpty()) {
                 mockCustomerList.add(customer3);
-            } catch (RuntimeException e) {
+            } else {
                 System.out.println(customer3.getEmail() + " already exists");
             }
-
             // Save Customer mock data (in case not already exists)
             customerRepository.saveAll(mockCustomerList);
 
@@ -73,22 +74,22 @@ public class MockData {
             // Initial method for not adding already existing Cars (when ddl=update)
             ArrayList<Car> mockCarList = new ArrayList<Car>();
 
-            try {
-                Optional<Car> tempCar1 = carRepository.findByRegNr("abc123");
+            Optional<Car> tempCar1 = carRepository.findByRegNr("abc123");
+            if (tempCar1.isEmpty()) {
                 mockCarList.add(car1);
-            } catch (RuntimeException e) {
+            } else {
                 System.out.println(car1.getRegNr() + " already exists");
             }
-            try {
-                Optional<Car> tempCar2 = carRepository.findByRegNr("bcd234");
+            Optional<Car> tempCar2 = carRepository.findByRegNr("bcd234");
+            if (tempCar2.isEmpty()) {
                 mockCarList.add(car2);
-            } catch (RuntimeException e) {
+            } else {
                 System.out.println(car2.getRegNr() + " already exists");
             }
-            try {
-                Optional<Car> tempCar3 = carRepository.findByRegNr("cde345");
+            Optional<Car> tempCar3 = carRepository.findByRegNr("cde345");
+            if (tempCar3.isEmpty()) {
                 mockCarList.add(car3);
-            } catch (RuntimeException e) {
+            } else {
                 System.out.println(car3.getRegNr() + " already exists");
             }
 
@@ -127,54 +128,56 @@ public class MockData {
             // Initial method for not adding already existing Cars (when ddl=update)
 //            ArrayList<Order> mockOrderList = new ArrayList<Order>(); // Example without list
 
-            try {
-                Optional<Order> tempOrder1 = orderRepository.findByOrderNr("abc123");
-                order1.setPrice(order1.getNumberOfDays() * carRepository.findById(order1.getCarId()).get().getDailySek());
-//                mockCarList.add(car1);
-                orderRepository.save(order2); // Instead of using list for saveAll
-            } catch (RuntimeException e) {
-                System.out.println(car1.getRegNr() + " already exists");
+
+            Optional<Order> tempOrder1 = orderRepository.findByOrderNr("1001");
+            if (tempOrder1.isEmpty()) {
+//                   order1.setPrice(order1.getNumberOfDays() * carRepository.findById(order1.getCarId()).get().getDailySek());
+//                   mockOrderList.add(order1);
+                orderRepository.save(order1); // Instead of using list for saveAll
+            } else {
+                System.out.println(order1.getOrderNr() + " already exists");
             }
-            try {
-                Optional<Order> tempOrder2 = orderRepository.findByOrderNr("abc123");
-                order2.setPrice(order2.getNumberOfDays() * carRepository.findById(order2.getCarId()).get().getDailySek());
-//                mockCarList.add(car2);
-                orderRepository.save(order1);
-            } catch (RuntimeException e) {
-                System.out.println(car2.getRegNr() + " already exists");
+
+            Optional<Order> tempOrder2 = orderRepository.findByOrderNr("1002");
+            if (tempOrder2.isEmpty()) {
+//                order2.setPrice(order2.getNumberOfDays() * carRepository.findById(order2.getCarId()).get().getDailySek());
+                orderRepository.save(order2);
+            } else {
+                System.out.println(order2.getOrderNr() + " already exists");
             }
-            try {
-                Optional<Order> tempOrder3 = orderRepository.findByOrderNr("abc123");
-                order3.setPrice(order3.getNumberOfDays() * carRepository.findById(order3.getCarId()).get().getDailySek());
-//                mockCarList.add(car3);
+
+            Optional<Order> tempOrder3 = orderRepository.findByOrderNr("1003");
+            if (tempOrder3.isEmpty()) {
+//                order3.setPrice(order3.getNumberOfDays() * carRepository.findById(order3.getCarId()).get().getDailySek());
                 orderRepository.save(order3);
-            } catch (RuntimeException e) {
-                System.out.println(car3.getRegNr() + " already exists");
+            } else {
+                System.out.println(order3.getOrderNr() + " already exists");
             }
 
             // Save Order mock data
 //            orderRepository.saveAll(mockOrderList);
 
+
             ////-------- Add saved Orders to pertinent Cars -------////
-            try {
-                Optional<Car> tempCar2a = carRepository.findByRegNr("bcd234"); // In one order
-                if (tempCar2a.isPresent()) {
-                    tempCar2a.get().setCarOrders(List.of(orderRepository.findByOrderNr("1001").get()));
-                    carRepository.save(tempCar2a.get());
-                }
-            } catch (RuntimeException e) {
-                System.out.println("Not applicable");
-            }
-            try {
-                Optional<Car> tempCar3a = carRepository.findByRegNr("cde345"); // In two orders
-                if (tempCar3a.isPresent()) {
-                    tempCar3a.get().setCarOrders(List.of(orderRepository.findByOrderNr("1002").get(),
-                            orderRepository.findByOrderNr("1003").get()));
-                    carRepository.save(tempCar3a.get());
-                }
-            } catch (RuntimeException e) {
-                System.out.println("Not applicable");
-            }
+//            try {
+//                Optional<Car> tempCar2a = carRepository.findByRegNr("bcd234"); // In one order
+//                if (tempCar2a.isPresent()) {
+//                    tempCar2a.get().setCarOrders(List.of(orderRepository.findByOrderNr("1001").get()));
+//                    carRepository.save(tempCar2a.get());
+//                }
+//            } catch (RuntimeException e) {
+//                System.out.println("Not applicable");
+//            }
+//            try {
+//                Optional<Car> tempCar3a = carRepository.findByRegNr("cde345"); // In two orders
+//                if (tempCar3a.isPresent()) {
+//                    tempCar3a.get().setCarOrders(List.of(orderRepository.findByOrderNr("1002").get(),
+//                            orderRepository.findByOrderNr("1003").get()));
+//                    carRepository.save(tempCar3a.get());
+//                }
+//            } catch (RuntimeException e) {
+//                System.out.println("Not applicable");
+//            }
         };
 
     }
