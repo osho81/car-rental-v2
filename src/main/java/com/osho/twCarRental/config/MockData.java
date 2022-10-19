@@ -138,7 +138,8 @@ public class MockData {
 
             Optional<Order> tempOrder2 = orderRepository.findByOrderNr("1002");
             if (tempOrder2.isEmpty()) {
-                order2.setPrice(order2.getNumberOfDays() * carRepository.findById(order2.getCarId()).get().getDailySek());
+//                order2.setPrice(order2.getNumberOfDays() * carRepository.findById(order2.getCarId()).get().getDailySek());
+                order2.setPrice(order2.getNumberOfDays() * carRepository.findById(order2.getCarId()).orElse(null).getDailySek());
                 orderRepository.save(order2);
             } else {
                 System.out.println(order2.getOrderNr() + " already exists");
@@ -146,7 +147,8 @@ public class MockData {
 
             Optional<Order> tempOrder3 = orderRepository.findByOrderNr("1003");
             if (tempOrder3.isEmpty()) {
-                order3.setPrice(order3.getNumberOfDays() * carRepository.findById(order3.getCarId()).get().getDailySek());
+//                order3.setPrice(order3.getNumberOfDays() * carRepository.findById(order3.getCarId()).get().getDailySek());
+                order3.setPrice(order3.getNumberOfDays() * carRepository.findById(order3.getCarId()).orElse(null).getDailySek());
                 orderRepository.save(order3);
             } else {
                 System.out.println(order3.getOrderNr() + " already exists");
@@ -160,7 +162,7 @@ public class MockData {
 
             Optional<Car> tempCar2a = carRepository.findByRegNr("bcd234"); // In one order
             if (tempCar2a.isPresent()) {
-                tempCar2a.get().setCarOrders(List.of(orderRepository.findByOrderNr("1001").get()));
+                tempCar2a.get().setCarOrders(List.of(orderRepository.findByOrderNr("1001").orElse(null)));
                 carRepository.save(tempCar2a.get());
             } else {
                 System.out.println("Not applicable");
@@ -168,8 +170,8 @@ public class MockData {
 
             Optional<Car> tempCar3a = carRepository.findByRegNr("cde345"); // In two orders
             if (tempCar3a.isPresent()) {
-                tempCar3a.get().setCarOrders(List.of(orderRepository.findByOrderNr("1002").get(),
-                        orderRepository.findByOrderNr("1003").get()));
+                tempCar3a.get().setCarOrders(List.of(orderRepository.findByOrderNr("1002").orElse(null),
+                        orderRepository.findByOrderNr("1003").orElse(null)));
                 carRepository.save(tempCar3a.get());
             } else {
                 System.out.println("Not applicable");
