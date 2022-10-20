@@ -33,7 +33,7 @@ public class Car {
 
     // A car can be in many orders, and vice versa
     // (Refers to variable name carId in Order class, not the column name)
-    @OneToMany(mappedBy = "carId")
+    @OneToMany(mappedBy = "carId", cascade = CascadeType.PERSIST)
     private List<Order> ordersOfCar = new ArrayList<>();
 
     public Car() {

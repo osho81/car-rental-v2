@@ -19,9 +19,10 @@ public class CustomerController {
 
 
     ////---------- READ (GET) -------------////
-    @GetMapping("customers/{id}") // NOT IN PROJECT REQUIREMENT
+
+    @GetMapping("/customers/{id}") // NOT A PROJECT REQUIREMENT
     public ResponseEntity<Customer> getCustomerById(@PathVariable int id) {
-        return new ResponseEntity<Customer>(customerService.getCustomer(id), HttpStatus.OK);
+        return new ResponseEntity<Customer>(customerService.getCustomerById(id), HttpStatus.OK);
     }
 
     // "Lista kunder GET /api/v1/customers"

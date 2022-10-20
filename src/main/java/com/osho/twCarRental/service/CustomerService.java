@@ -2,10 +2,10 @@ package com.osho.twCarRental.service;
 
 import com.osho.twCarRental.model.Customer;
 import com.osho.twCarRental.repository.CustomerRepository;
+import com.osho.twCarRental.service.repository.CustomerServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +20,7 @@ public class CustomerService implements CustomerServiceRepository {
     ////---------------- READ (GET) -----------------////
 
     @Override  // NOT IN PROJECT REQUIREMENT
-    public Customer getCustomer(int id) {
+    public Customer getCustomerById(int id) {
         Optional<Customer> foundCustomer = customerRepository.findById(id);
         if (foundCustomer.isPresent()) {
             return foundCustomer.get();

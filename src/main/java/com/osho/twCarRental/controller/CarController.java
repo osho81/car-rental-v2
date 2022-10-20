@@ -18,7 +18,7 @@ public class CarController {
 
     ////---------- READ (GET) -------------////
 
-    @GetMapping("/cars/{id}")// NOT IN PROJECT REQUIREMENT
+    @GetMapping("/cars/{id}") // NOT IN PROJECT REQUIREMENT
     public ResponseEntity<Car> getCarById(@PathVariable int id) {
         return new ResponseEntity<Car>(carService.getCarById(id), HttpStatus.OK);
     }
@@ -37,4 +37,15 @@ public class CarController {
         return new ResponseEntity<Car>(carService.addCar(car), HttpStatus.CREATED);
     }
 
+
+    // "Uppdatera fordon PUT /api/v1/updatecar"
+    @PutMapping("/updatecar/{id}") // Find by path-id, and update that car
+    public ResponseEntity<Car> updateCar(@RequestBody Car car, @PathVariable int id) {
+        return new ResponseEntity<Car>(carService.updateCar(id, car), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/updatecar") // Find by passed in regNr, and update that car
+    public ResponseEntity<Car> updateCar(@RequestBody Car car) {
+        return new ResponseEntity<Car>(carService.updateCarByRegnr(car), HttpStatus.CREATED);
+    }
 }
