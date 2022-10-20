@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "cars")
@@ -21,7 +22,8 @@ public class Car {
     private String model; // BMW, Audi etc.
 
     @Column(name = "type")
-    private String type; // SUV, van, sedan
+//    private String type; // SUV, van, sedan
+    private String type; // Corresponds to sql type set() choices
 
     @Column(name = "model_year")
     private int modelYear;
@@ -29,31 +31,31 @@ public class Car {
     @Column(name = "daily_sek")
     private double dailySek; // SEK by default
 
-    // Many cars can also be in many orders, and vice versa
-    // (Refer to variable name orderedCars in Order class, not column name in this case)
+    // A car can be in many orders, and vice versa
+    // (Refers to variable name carId in Order class, not the column name)
     @OneToMany(mappedBy = "carId")
-    private List<Order> carOrders = new ArrayList<>();
+    private List<Order> ordersOfCar = new ArrayList<>();
 
     public Car() {
     }
 
-    public Car(String regNr, String model, String type, int modelYear, double dailySek, List<Order> carOrders) {
+    public Car(String regNr, String model, String type, int modelYear, double dailySek, List<Order> ordersOfCar) {
         this.regNr = regNr;
         this.model = model;
         this.type = type;
         this.modelYear = modelYear;
         this.dailySek = dailySek;
-        this.carOrders = carOrders;
+        this.ordersOfCar = ordersOfCar;
     }
 
-    public Car(int id, String regNr, String model, String type, int modelYear, double dailySek, List<Order> carOrders) {
+    public Car(int id, String regNr, String model, String type, int modelYear, double dailySek, List<Order> ordersOfCar) {
         this.id = id;
         this.regNr = regNr;
         this.model = model;
         this.type = type;
         this.modelYear = modelYear;
         this.dailySek = dailySek;
-        this.carOrders = carOrders;
+        this.ordersOfCar = ordersOfCar;
     }
 
     public int getId() {
@@ -104,12 +106,12 @@ public class Car {
         this.dailySek = dailySek;
     }
 
-    public List<Order> getCarOrders() {
-        return carOrders;
+    public List<Order> getOrdersOfCar() {
+        return ordersOfCar;
     }
 
-    public void setCarOrders(List<Order> carOrders) {
-        this.carOrders = carOrders;
+    public void setOrdersOfCar(List<Order> ordersOfCar) {
+        this.ordersOfCar = ordersOfCar;
     }
 
 
@@ -122,12 +124,8 @@ public class Car {
                 ", type='" + type + '\'' +
                 ", modelYear=" + modelYear +
                 ", dailySek=" + dailySek +
-//                ", carOrders=" + displayCarOrders() +
-                ", carOrders=" + Arrays.toString(carOrders.toArray()) +
+                ", carOrders=" + Arrays.toString(ordersOfCar.toArray()) +
                 '}';
     }
 
-//    public String displayCarOrders() {
-//        return Arrays.toString(carOrders.toArray());
-//    }
 }

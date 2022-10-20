@@ -3,6 +3,8 @@ package com.osho.twCarRental.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "customers")
@@ -31,22 +33,30 @@ public class Customer {
     @Column(name = "address")
     private String address;
 
+    // A customers can make multiple orders
+    // (Refers to variable name customerId in Order class, not the column name)
+    @OneToMany(mappedBy = "customerId")
+    private List<Order> ordersByCustomer = new ArrayList<>();
+
     // Empty constructor
     public Customer() {
     }
 
     // Constructor without ID
-    public Customer(String ssn, LocalDate dateOfBirth, String email, String fName, String lName, String address) {
+    public Customer(String ssn, LocalDate dateOfBirth, String email, String fName,
+                    String lName, String address, List<Order> ordersByCustomer) {
         this.ssn = ssn;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.fName = fName;
         this.lName = lName;
         this.address = address;
+        this.ordersByCustomer = ordersByCustomer;
     }
 
     // Constructor with ID
-    public Customer(int id, String ssn, LocalDate dateOfBirth, String email, String fName, String lName, String address) {
+    public Customer(int id, String ssn, LocalDate dateOfBirth, String email,
+                    String fName, String lName, String address, List<Order> ordersByCustomer) {
         this.id = id;
         this.ssn = ssn;
         this.dateOfBirth = dateOfBirth;
@@ -54,6 +64,7 @@ public class Customer {
         this.fName = fName;
         this.lName = lName;
         this.address = address;
+        this.ordersByCustomer = ordersByCustomer;
     }
 
     public int getId() {
@@ -70,6 +81,14 @@ public class Customer {
 
     public void setSsn(String ssn) {
         this.ssn = ssn;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getEmail() {
@@ -102,5 +121,13 @@ public class Customer {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public List<Order> getOrdersByCustomer() {
+        return ordersByCustomer;
+    }
+
+    public void setCarOrders(List<Order> ordersByCustomer) {
+        this.ordersByCustomer = ordersByCustomer;
     }
 }

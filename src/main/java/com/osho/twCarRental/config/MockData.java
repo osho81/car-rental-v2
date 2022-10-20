@@ -1,6 +1,7 @@
 package com.osho.twCarRental.config;
 
 import com.osho.twCarRental.model.Car;
+import com.osho.twCarRental.model.CarType;
 import com.osho.twCarRental.model.Customer;
 import com.osho.twCarRental.model.Order;
 import com.osho.twCarRental.repository.CarRepository;
@@ -34,13 +35,13 @@ public class MockData {
             ////------- Create several Customer mock data -------////
             Customer customer1 = new Customer(
                     "12345", LocalDate.of(1970, Month.JULY, 7),
-                    "dodu@gmail.com", "Donald", "Duck", "First street 1 Stockholm");
+                    "dodu@gmail.com", "Donald", "Duck", "First street 1 Stockholm", null);
             Customer customer2 = new Customer(
                     "23456", LocalDate.of(1980, Month.AUGUST, 8),
-                    "mimo1@gmail.com", "Mickey", "Mouse", "Second street 10 Stockholm");
+                    "mimo1@gmail.com", "Mickey", "Mouse", "Second street 10 Stockholm", null);
             Customer customer3 = new Customer(
                     "34567", LocalDate.of(1990, Month.SEPTEMBER, 9),
-                    "mimo2@gmail.com", "Minnie", "Mouse", "Second street 10 Stockholm");
+                    "mimo2@gmail.com", "Minnie", "Mouse", "Second street 10 Stockholm", null);
 
             // Initial method for not adding already existing Customers (when ddl=update)
             ArrayList<Customer> mockCustomerList = new ArrayList<Customer>();
@@ -68,9 +69,10 @@ public class MockData {
             customerRepository.saveAll(mockCustomerList);
 
             ////------- Create several Car mock data -------////
-            Car car1 = new Car("abc123", "bmw", "sedan", 2020, 500, null);
-            Car car2 = new Car("bcd234", "audi", "sedan", 2021, 600, null);
-            Car car3 = new Car("cde345", "volvo", "suv", 2022, 700, null);
+            // name() for converting enum CarType to string
+            Car car1 = new Car("abc123", "bmw",  CarType.SEDAN.name(), 2020, 500, null);
+            Car car2 = new Car("bcd234", "audi",  CarType.SEDAN.name(), 2021, 600, null);
+            Car car3 = new Car("cde345", "volvo", CarType.SUV.name(), 2022, 700, null);
 
             // Initial method for not adding already existing Cars (when ddl=update)
             ArrayList<Car> mockCarList = new ArrayList<Car>();
@@ -162,7 +164,7 @@ public class MockData {
 
             Optional<Car> tempCar2a = carRepository.findByRegNr("bcd234"); // In one order
             if (tempCar2a.isPresent()) {
-                tempCar2a.get().setCarOrders(List.of(orderRepository.findByOrderNr("1001").orElse(null)));
+                tempCar2a.get().setOrdersOfCar(List.of(orderRepository.findByOrderNr("1001").orElse(null)));
                 carRepository.save(tempCar2a.get());
             } else {
                 System.out.println("Not applicable");
@@ -170,15 +172,12 @@ public class MockData {
 
             Optional<Car> tempCar3a = carRepository.findByRegNr("cde345"); // In two orders
             if (tempCar3a.isPresent()) {
-                tempCar3a.get().setCarOrders(List.of(orderRepository.findByOrderNr("1002").orElse(null),
+                tempCar3a.get().setOrdersOfCar(List.of(orderRepository.findByOrderNr("1002").orElse(null),
                         orderRepository.findByOrderNr("1003").orElse(null)));
                 carRepository.save(tempCar3a.get());
             } else {
                 System.out.println("Not applicable");
             }
-
-            // Control printout
-            System.out.println(tempCar3a);
 
         };
     }

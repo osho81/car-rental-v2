@@ -36,10 +36,15 @@ public class Order {
     @Column(name = "price")
     private double price;
 
+    //    @Transient // To calculate price etc., without storing number of days
+    @Column(name = "num_of_days")
+    private int numberOfDays;
+
     @Column(name = "customer_id")
     private int customerId; // One customer per order
 
-//    // Don't need manyToMany between Cars and Orders
+
+    // ManyToMany between Cars and Orders // SKIP THIS
 //    @ManyToMany(cascade = CascadeType.DETACH)
 //    @JoinTable(
 //            name = "ordered_cars",
@@ -49,10 +54,6 @@ public class Order {
 
     @Column(name = "car_id")
     private int carId;
-
-    //    @Transient // To calculate price etc., without storing number of days
-    @Column(name = "num_of_days")
-    private int numberOfDays;
 
     public Order() {
     }
