@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface OrderServiceRepository {
 
-    //-------- READ (GET) --------//
+    //---------- READ (GET) ----------//
     Order getOrderById(int id);
 
     Order getOrderByOrderNr(String orderNr);
@@ -14,4 +14,7 @@ public interface OrderServiceRepository {
     List<Order> getAllOrders();
 
     List<Order> getOrdersByUser(String email);
+
+    //-------- CREATE (SAVE) ---------//
+    Order orderCar(Order order);
 }

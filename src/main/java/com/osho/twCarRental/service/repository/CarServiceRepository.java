@@ -13,7 +13,13 @@ public interface CarServiceRepository {
     Car addCar(Car car);
 
     //--------- UPDATE ----------//
-    Car updateCar(int id, Car car);
     Car updateCarByRegnr(Car car);
+    Car updateCar(int id, Car car);
+
+    //--------- DELETE ----------//
+
+    void deleteCar(Car car);
+
+    void deleteCarById(int id);
 
 }
