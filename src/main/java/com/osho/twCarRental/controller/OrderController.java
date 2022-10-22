@@ -52,9 +52,9 @@ public class OrderController {
     //---------------- UPDATE (SAVE) ----------------//
 
     // "Uppdatera order PUT /api/v1/updateorder"
-    @PostMapping("/updateorder")
+    @PutMapping("/updateorder")
     public ResponseEntity<Order> updateCar(@RequestBody Order order) {
-        return new ResponseEntity<Order>(orderService.updateCar(order), HttpStatus.CREATED);
+        return new ResponseEntity<Order>(orderService.updateOrder(order), HttpStatus.CREATED);
     }
 
 }
