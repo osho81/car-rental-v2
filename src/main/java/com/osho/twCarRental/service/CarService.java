@@ -6,6 +6,7 @@ import com.osho.twCarRental.service.repository.CarServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,39 +49,33 @@ public class CarService implements CarServiceRepository {
 
     //---------------- UPDATE -----------------//
 
-    // Update v1: find car by passed in regNr-arg, then update found car
+    // Update v1: find car by id or regNr-arg in request body, then update found car
     public Car updateCar(Car car) {
 
-        // Get car to update with id, if exists
-//        Car carToUpdate = carRepository.findById(car.getId()).orElseThrow(
-//                () -> new RuntimeException("Car with id " + car.getId() + " not found"));
-        // Get car to update with reg.nr, if exists
-//        Car carToUpdate = carRepository.findByRegNr(car.getRegNr()).orElseThrow(
-//                () -> new RuntimeException("Car with reg. nr " + car.getRegNr() + " not found"));
-
         // Get car to update with id if exists, else get with reg.nr if that exists
-//        Car carToUpdate = carRepository.findById(car.getId()).orElse(
-//                carRepository.findByRegNr(car.getRegNr()).orElseThrow(
-//                        () -> new RuntimeException("Car with id " + car.getId()
-//                                + " or with reg. nr " + car.getRegNr() + " not found")));
-
         Optional<Car> foundById = carRepository.findById(car.getId());
         Optional<Car> foundByRegNr = carRepository.findByRegNr(car.getRegNr());
-        if (!foundById.isPresent()) {
-            throw new RuntimeException("Car with id " + car.getId() + " not found");
-        } else {
-            Car carToUpdate = carRepository.findById(car.getId()).get();
-            // Add new value to each column
-            carToUpdate.setRegNr(car.getRegNr());
-            carToUpdate.setModel(car.getModel());
-            carToUpdate.setType(car.getType());
-            carToUpdate.setModelYear(car.getModelYear());
-            carToUpdate.setDailySek(car.getDailySek());
-            carToUpdate.setOrdersOfCar(car.getOrdersOfCar());
-
-            // Save, i.e. update existing car, with new passed in values
-            return carRepository.save(carToUpdate);
+        if (foundById.isEmpty() && foundByRegNr.isEmpty()) {
+            throw new RuntimeException("Car with id " + car.getId()
+                    + " or reg. nr " + car.getRegNr() + " not found");
         }
+
+        // Then, if either id or reg.nr exists, get car by one of them
+        Car carToUpdate = foundById.isPresent() ? carRepository.findById(car.getId()).get() :
+                carRepository.findByRegNr(car.getRegNr()).get();
+
+        // Add new value to each column, but keep old value if new is null/empty
+        carToUpdate.setRegNr(car.getRegNr() == null ? carToUpdate.getRegNr() : car.getRegNr());
+        carToUpdate.setModel(car.getModel() == null ? carToUpdate.getModel() : car.getModel());
+        carToUpdate.setType(car.getType() == null ? carToUpdate.getType() : car.getType());
+        // Convert local-date year to (sub)string, capture year, then to parse to int: model year is max next year
+        carToUpdate.setModelYear(car.getModelYear() > Integer.parseInt(LocalDate.now().toString().substring(0,4))+1 ||
+                car.getModelYear() == 0 ? carToUpdate.getModelYear() : car.getModelYear());
+        carToUpdate.setDailySek(car.getDailySek() == 0 ? carToUpdate.getDailySek() : car.getDailySek());
+//        carToUpdate.setOrdersOfCar(car.getOrdersOfCar());
+
+        // Save, i.e. update existing car, with new (and eventual old) passed in values
+        return carRepository.save(carToUpdate);
     }
 
     // Update v2: find car by id from path-url, then update found car
