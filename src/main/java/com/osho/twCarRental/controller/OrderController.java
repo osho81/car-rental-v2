@@ -1,5 +1,6 @@
 package com.osho.twCarRental.controller;
 
+import com.osho.twCarRental.model.Car;
 import com.osho.twCarRental.model.Order;
 import com.osho.twCarRental.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +54,33 @@ public class OrderController {
 
     // "Uppdatera order PUT /api/v1/updateorder"
     @PutMapping("/updateorder")
-    public ResponseEntity<Order> updateCar(@RequestBody Order order) {
+    public ResponseEntity<Order> updateOrder(@RequestBody Order order) {
         return new ResponseEntity<Order>(orderService.updateOrder(order), HttpStatus.CREATED);
     }
 
+
+    //----------------- DELETE --------------------//
+
+    // "Avboka order PUT /api/v1/cancelorder"
+    @DeleteMapping("/cancelorder")
+    public ResponseEntity<String> cancelOrder(@RequestBody Order order) {
+        orderService.cancelOrder(order);
+        return new ResponseEntity<String>("Order with order nr " + order.getOrderNr() + " deleted.", HttpStatus.OK);
+    }
+
+    // My version with id/orderNr from req-body
+    @DeleteMapping("/deleteorder")
+    public ResponseEntity<String> deleteOrder(@RequestBody Order order) {
+        orderService.deleteOrder(order);
+        return new ResponseEntity<String>("Order with " + (order.getId() == 0 ?
+                "order nr " : "with id " + order.getId() + " and order nr ") +
+                order.getOrderNr() + " deleted.", HttpStatus.OK);
+    }
+
+    // My version with /{id}
+    @DeleteMapping("/deleteorder/{id}")
+    public ResponseEntity<String> deleteOrderById(@PathVariable int id) {
+        orderService.deleteOrderById(id);
+        return new ResponseEntity<String>("Order with id " + id + " deleted.", HttpStatus.OK);
+    }
 }

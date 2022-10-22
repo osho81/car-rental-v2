@@ -3,8 +3,7 @@ package com.osho.twCarRental.model;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.List;;
 
 @Entity
 @Table(name = "cars")
@@ -40,16 +39,6 @@ public class Car {
     }
 
     public Car(String regNr, String model, String type, int modelYear, double dailySek, List<Order> ordersOfCar) {
-        this.regNr = regNr;
-        this.model = model;
-        this.type = type;
-        this.modelYear = modelYear;
-        this.dailySek = dailySek;
-        this.ordersOfCar = ordersOfCar;
-    }
-
-    public Car(int id, String regNr, String model, String type, int modelYear, double dailySek, List<Order> ordersOfCar) {
-        this.id = id;
         this.regNr = regNr;
         this.model = model;
         this.type = type;

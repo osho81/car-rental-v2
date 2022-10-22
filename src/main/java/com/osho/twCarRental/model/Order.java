@@ -1,16 +1,8 @@
 package com.osho.twCarRental.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import net.bytebuddy.asm.Advice;
-
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.time.temporal.ChronoUnit.DAYS;
 
 @Entity
 @Table(name = "orders") // "order" is reserved by sql

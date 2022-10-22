@@ -67,6 +67,4 @@ public class CarController {
         carService.deleteCarById(id);
         return new ResponseEntity<String>("Car with id " + id + " deleted.", HttpStatus.OK);
     }
-
-
 }
