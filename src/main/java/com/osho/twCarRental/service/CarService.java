@@ -41,9 +41,8 @@ public class CarService implements CarServiceRepository {
             throw new RuntimeException(car.getRegNr() + " already in our fleet.");
         } else {
             System.out.println(car.getModel() + " with reg. nr " + car.getRegNr() + " is added.");
-            carRepository.save(car);
+            return carRepository.save(car);
         }
-        return carRepository.save(car);
     }
 
     //---------------- UPDATE -----------------//

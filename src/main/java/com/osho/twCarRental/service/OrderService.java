@@ -58,16 +58,16 @@ public class OrderService implements OrderServiceRepository {
         }
     }
 
+
+    ////-------------- CREATE (SAVE) --------------////
     @Override
     public Order orderCar(Order order) {
         Optional<Order> foundOrder = orderRepository.findByOrderNr(order.getOrderNr());
         if (foundOrder.isPresent()) {
-            throw new RuntimeException("")
+            throw new RuntimeException(order.getOrderNr() + " already exists.");
+        } else {
+            return orderRepository.save(order);
         }
     }
-
-
-    ////-------------- CREATE (SAVE) --------------////
-
 
 }
