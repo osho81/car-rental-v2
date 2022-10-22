@@ -13,8 +13,8 @@ public interface CarServiceRepository {
     Car addCar(Car car);
 
     //--------- UPDATE ----------//
-    Car updateCarByRegnr(Car car);
-    Car updateCar(int id, Car car);
+    Car updateCar(Car car);
+    Car updateCarById(int id, Car car);
 
     //--------- DELETE ----------//
 
