@@ -17,4 +17,6 @@ public interface OrderServiceRepository {
 
     //-------- CREATE (SAVE) ---------//
     Order orderCar(Order order);
+
+    Order updateCar(Order order);
 }

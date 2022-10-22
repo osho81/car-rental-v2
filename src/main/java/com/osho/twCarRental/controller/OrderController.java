@@ -48,4 +48,13 @@ public class OrderController {
         return new ResponseEntity<Order>(orderService.orderCar(order), HttpStatus.CREATED);
     }
 
+
+    //---------------- UPDATE (SAVE) ----------------//
+
+    // "Uppdatera order PUT /api/v1/updateorder"
+    @PostMapping("/updateorder")
+    public ResponseEntity<Order> updateCar(@RequestBody Order order) {
+        return new ResponseEntity<Order>(orderService.updateCar(order), HttpStatus.CREATED);
+    }
+
 }

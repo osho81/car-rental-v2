@@ -25,7 +25,7 @@ public class Order {
     private String orderNr;
 
     @Column(name = "order_date")
-    private LocalDateTime orderDate;
+    private LocalDateTime orderOrUpdateTime;
 
     @Column(name = "first_rental_day")
     private LocalDate firstRentalDay;
@@ -33,53 +33,31 @@ public class Order {
     @Column(name = "last_rental_day")
     private LocalDate lastRentalDay;
 
-    @Column(name = "price")
-    private double price;
-
-    //    @Transient // To calculate price etc., without storing number of days
-    @Column(name = "num_of_days")
-    private int numberOfDays;
-
     @Column(name = "customer_id")
     private int customerId; // One customer per order
 
-
-    // ManyToMany between Cars and Orders // SKIP THIS
-//    @ManyToMany(cascade = CascadeType.DETACH)
-//    @JoinTable(
-//            name = "ordered_cars",
-//            joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "car_id", referencedColumnName = "id"))
-//    private List<Car> orderedCars = new ArrayList<>();
-
     @Column(name = "car_id")
     private int carId;
+    @Column(name = "price")
+    private double price;
+
+    @Column(name = "num_of_days")
+    private int numberOfDays;
+
 
     public Order() {
     }
 
-    public Order(String orderNr, LocalDateTime orderDate, LocalDate firstRentalDay, LocalDate lastRentalDay,
-                 int customerId, int carId) {
+    public Order(String orderNr, LocalDateTime orderOrUpdateTime, LocalDate firstRentalDay, LocalDate lastRentalDay,
+                 int customerId, int carId, double price, int numberOfDays) {
         this.orderNr = orderNr;
-        this.orderDate = orderDate;
+        this.orderOrUpdateTime = orderOrUpdateTime.withNano(0); // Remove nano seconds
         this.firstRentalDay = firstRentalDay;
         this.lastRentalDay = lastRentalDay;
         this.customerId = customerId;
         this.carId = carId;
-//        this.orderedCars = orderedCars;
-        setNumberOfDays(firstRentalDay, lastRentalDay);
-    }
-
-    public Order(int id, String orderNr, LocalDateTime orderDate, LocalDate firstRentalDay, LocalDate lastRentalDay,
-                 int customerId, int carId) {
-        this.id = id;
-        this.orderNr = orderNr;
-        this.orderDate = orderDate;
-        this.firstRentalDay = firstRentalDay;
-        this.lastRentalDay = lastRentalDay;
-        this.customerId = customerId;
-        this.carId = carId;
-//        this.orderedCars = orderedCars;
+        this.numberOfDays = numberOfDays;
+        this.price = price;
     }
 
     public int getId() {
@@ -98,12 +76,12 @@ public class Order {
         this.orderNr = orderNr;
     }
 
-    public LocalDateTime getOrderDate() {
-        return orderDate;
+    public LocalDateTime getOrderOrUpdateTime() {
+        return orderOrUpdateTime;
     }
 
-    public void setOrderDate(LocalDateTime orderDate) {
-        this.orderDate = orderDate;
+    public void setOrderOrUpdateTime(LocalDateTime orderOrUpdateTime) {
+        this.orderOrUpdateTime = orderOrUpdateTime.withNano(0); // Remove nano seconds
     }
 
     public LocalDate getFirstRentalDay() {
@@ -122,14 +100,6 @@ public class Order {
         this.lastRentalDay = lastRentalDay;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double priceInclVat) {
-        this.price = priceInclVat;
-    }
-
     public int getCustomerId() {
         return customerId;
     }
@@ -137,16 +107,6 @@ public class Order {
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
-
-    // Solves the infinite recursion problem (uncomment if needed)
-//    @JsonManagedReference
-//    public List<Car> getOrderedCars() {
-//        return orderedCars;
-//    }
-//
-//    public void setOrderedCars(List<Car> orderedCars) {
-//        this.orderedCars = orderedCars;
-//    }
 
     public int getCarId() {
         return carId;
@@ -156,22 +116,28 @@ public class Order {
         this.carId = carId;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     public int getNumberOfDays() {
         return numberOfDays;
     }
 
-    public void setNumberOfDays(LocalDate firstRentalDay, LocalDate lastRentalDay) {
-        // +1 to include first day; e.g. return same day would otherwise be 0 days
-        this.numberOfDays = (int) DAYS.between(firstRentalDay, lastRentalDay) + 1;
+    public void setNumberOfDays(int numberOfDays) {
+        this.numberOfDays = numberOfDays;
     }
-
 
     @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
                 ", orderNr='" + orderNr + '\'' +
-                ", orderDate=" + orderDate +
+                ", orderDate=" + orderOrUpdateTime +
                 ", firstRentalDay=" + firstRentalDay +
                 ", lastRentalDay=" + lastRentalDay +
                 ", price=" + price +
