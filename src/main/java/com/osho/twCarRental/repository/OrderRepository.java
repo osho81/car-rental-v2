@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 
+    // Customized method
     Optional<Order> findByOrderNr(String orderNr);
 }

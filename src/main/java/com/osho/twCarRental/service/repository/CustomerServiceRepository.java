@@ -6,8 +6,12 @@ import java.util.List;
 
 public interface CustomerServiceRepository {
 
-    Customer getCustomerById(int id);
+    //---- PROJECT REQUIREMENTS ----//
     List<Customer> getAllCustomers();
 
 
+    //-- NOT PROJECT REQUIREMENTS --//
+    Customer getCustomerById(int id);
+    Customer addCustomer(Customer customer);
+    void deleteCustomer(Customer customer);
 }

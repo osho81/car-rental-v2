@@ -124,19 +124,4 @@ public class Order {
         this.numberOfDays = numberOfDays;
     }
 
-    // During development
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", orderNr='" + orderNr + '\'' +
-                ", orderDate=" + orderOrUpdateTime +
-                ", firstRentalDay=" + firstRentalDay +
-                ", lastRentalDay=" + lastRentalDay +
-                ", price=" + price +
-                ", customerId=" + customerId +
-                ", carId=" + carId +
-                ", numberOfDays=" + numberOfDays +
-                '}';
-    }
 }
