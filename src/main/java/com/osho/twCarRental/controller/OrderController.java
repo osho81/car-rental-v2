@@ -65,7 +65,7 @@ public class OrderController {
     @DeleteMapping("/cancelorder")
     public ResponseEntity<String> cancelOrder(@RequestBody Order order) {
         orderService.cancelOrder(order);
-        return new ResponseEntity<String>("Order with order nr " + order.getOrderNr() + " deleted.", HttpStatus.OK);
+        return new ResponseEntity<String>("Order with order nr " + order.getOrderNr() + " deleted (and backed up).", HttpStatus.OK);
     }
 
     // My version with id/orderNr from req-body

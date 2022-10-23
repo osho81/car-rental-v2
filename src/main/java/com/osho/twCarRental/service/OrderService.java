@@ -183,7 +183,7 @@ public class OrderService implements OrderServiceRepository {
         // Save a "cancelled copy" of the deleted order; add "cancelled" to order nr
         // Use available method in this service class
         orderCar(new Order(
-                "cancelled" + orderToDelete.getOrderNr(),
+                "CANCELLED" + orderToDelete.getOrderNr(),
                 LocalDateTime.now(),
                 orderToDelete.getFirstRentalDay(),
                 orderToDelete.getLastRentalDay(),
