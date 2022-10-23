@@ -22,7 +22,7 @@ public class CarController {
 
     // "Lista tillgängliga bilar GET /api/v1/cars"
     @GetMapping("/cars")
-    public ResponseEntity<List<Car>> getAllCustomers() {
+    public ResponseEntity<List<Car>> getAllCars() {
         return new ResponseEntity<List<Car>>(carService.getAllCars(), HttpStatus.OK);
     }
 

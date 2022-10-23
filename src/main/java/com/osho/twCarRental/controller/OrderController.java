@@ -1,6 +1,7 @@
 package com.osho.twCarRental.controller;
 
 import com.osho.twCarRental.model.Car;
+import com.osho.twCarRental.model.Customer;
 import com.osho.twCarRental.model.Order;
 import com.osho.twCarRental.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,9 @@ public class OrderController {
 
     // "Se tidigare och aktiva bokningar GET /api/v1/myorders"
     @GetMapping("/myorders")
-
-
+    public ResponseEntity<List<Order>> getMyOrders(@RequestBody Customer customer) {
+        return new ResponseEntity<List<Order>>(orderService.getMyOrders(customer), HttpStatus.OK);
+    }
 
     // "Boka hyrbil POST /api/v1/ordercar"
     @PostMapping("/ordercar")

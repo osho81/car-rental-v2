@@ -1,5 +1,6 @@
 package com.osho.twCarRental.service;
 
+import com.osho.twCarRental.model.Car;
 import com.osho.twCarRental.model.Customer;
 import com.osho.twCarRental.model.Order;
 import com.osho.twCarRental.repository.CarRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,9 +34,18 @@ public class OrderService implements OrderServiceRepository {
     //-----------------------------------------------------------------------//
 
     @Override
-    public List<Order> getOrdersByUser(int id) {
+    public List<Order> getMyOrders(Customer customer) {
+        // Find customer, then get the associated orders list
+        Optional<Customer> foundCustomerById = customerRepository.findById(customer.getId());
+        Optional<Customer> foundCustomerByEmail = customerRepository.findByEmail(customer.getEmail());
 
-        return null;
+        if (foundCustomerById.isEmpty() && foundCustomerByEmail.isEmpty()) {
+            throw new RuntimeException("Customer with id " + customer.getId()
+                    + " or email " + customer.getEmail() + " not found");
+        }
+        List<Order> customerOrderList = foundCustomerById.isPresent() ? foundCustomerById.get().getOrdersByCustomer() :
+        foundCustomerByEmail.get().getOrdersByCustomer();
+        return customerOrderList;
     }
 
     @Override
@@ -170,22 +181,23 @@ public class OrderService implements OrderServiceRepository {
     //-----------------------------------------------------------------------//
 
     @Override
+    public List<Order> getOrdersByEmail(String email) {
+        // Find customer, then get the associated orders list
+        Optional<Customer> foundCustomer = customerRepository.findByEmail(email);
+        if (foundCustomer.isPresent()) {
+            return foundCustomer.get().getOrdersByCustomer();
+        } else {
+            throw new RuntimeException("No user with email " + email);
+        }
+    }
+
+    @Override
     public Order getOrderById(int id) {
         Optional<Order> foundOrder = orderRepository.findById(id);
         if (foundOrder.isPresent()) {
             return foundOrder.get();
         } else {
             throw new RuntimeException("Order with id " + id + " not found.");
-        }
-    }
-
-    @Override
-    public List<Order> getOrdersByEmail(String email) {
-        Optional<Customer> foundCustomer = customerRepository.findByEmail(email);
-        if (foundCustomer.isPresent()) {
-            return foundCustomer.get().getOrdersByCustomer();
-        } else {
-            throw new RuntimeException("No user with email " + email);
         }
     }
 
