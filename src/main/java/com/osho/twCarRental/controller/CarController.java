@@ -16,12 +16,9 @@ public class CarController {
     @Autowired
     private CarService carService;
 
-    //------------ READ (GET) --------------//
-
-    @GetMapping("/cars/{id}") // NOT IN PROJECT REQUIREMENT
-    public ResponseEntity<Car> getCarById(@PathVariable int id) {
-        return new ResponseEntity<Car>(carService.getCarById(id), HttpStatus.OK);
-    }
+    //-----------------------------------------------------------------------//
+    //------------------------- PROJECT REQUIREMENTS ------------------------//
+    //-----------------------------------------------------------------------//
 
     // "Lista tillgängliga bilar GET /api/v1/cars"
     @GetMapping("/cars")
@@ -29,16 +26,11 @@ public class CarController {
         return new ResponseEntity<List<Car>>(carService.getAllCars(), HttpStatus.OK);
     }
 
-    //----------- CREATE (SAVE)--------------//
-
     // "Lägga till fordon POST /api/v1/addcar"
     @PostMapping("/addcar")
     public ResponseEntity<Car> addCar(@RequestBody Car car) {
         return new ResponseEntity<Car>(carService.addCar(car), HttpStatus.CREATED);
     }
-
-
-    //-------------- UPDATE -----------------//
 
     // "Uppdatera fordon PUT /api/v1/updatecar"
     @PutMapping("/updatecar") // Find by passed in regNr, and update that car
@@ -46,20 +38,26 @@ public class CarController {
         return new ResponseEntity<Car>(carService.updateCar(car), HttpStatus.CREATED);
     }
 
-    @PutMapping("/updatecar/{id}") // Find by path-id, and update that car
-    public ResponseEntity<Car> updateCarById(@RequestBody Car car, @PathVariable int id) {
-        return new ResponseEntity<Car>(carService.updateCarById(id, car), HttpStatus.CREATED);
-    }
-
-
-    //-------------- DELETE -----------------//
-
     // "Ta bort fordon DELETE /api/v1/deletecar"
-
-    @DeleteMapping("/deletecar") // My version with /{id}
+    @DeleteMapping("/deletecar")
     public ResponseEntity<String> deleteCar(@RequestBody Car car) {
         carService.deleteCar(car);
         return new ResponseEntity<String>("Car with reg. nr " + car.getRegNr() + " deleted.", HttpStatus.OK);
+    }
+
+
+    //-----------------------------------------------------------------------//
+    //---------------------- NOT PROJECT REQUIREMENTS -----------------------//
+    //-----------------------------------------------------------------------//
+
+    @GetMapping("/cars/{id}") // NOT IN PROJECT REQUIREMENT
+    public ResponseEntity<Car> getCarById(@PathVariable int id) {
+        return new ResponseEntity<Car>(carService.getCarById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/updatecar/{id}") // Find by path-id, and update that car
+    public ResponseEntity<Car> updateCarById(@RequestBody Car car, @PathVariable int id) {
+        return new ResponseEntity<Car>(carService.updateCarById(id, car), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/deletecar/{id}") // My version with /{id}
@@ -67,4 +65,7 @@ public class CarController {
         carService.deleteCarById(id);
         return new ResponseEntity<String>("Car with id " + id + " deleted.", HttpStatus.OK);
     }
+
+
+
 }

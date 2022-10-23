@@ -21,25 +21,14 @@ public class CarService implements CarServiceRepository {
     @Autowired
     private OrderRepository orderRepository;
 
-    //--------------- READ (GET) -----------------//
-
-    @Override
-    public Car getCarById(int id) {
-        Optional<Car> foundCar = carRepository.findById(id);
-        if (foundCar.isPresent()) {
-            return foundCar.get();
-        } else {
-            throw new RuntimeException("Car with id " + id + " not found.");
-        }
-    }
+    //-----------------------------------------------------------------------//
+    //------------------------- PROJECT REQUIREMENTS ------------------------//
+    //-----------------------------------------------------------------------//
 
     @Override
     public List<Car> getAllCars() {
         return carRepository.findAll();
     }
-
-
-    //-------------- CREATE (SAVE) --------------//
 
     @Override
     public Car addCar(Car car) {
@@ -52,9 +41,6 @@ public class CarService implements CarServiceRepository {
         }
     }
 
-    //---------------- UPDATE -----------------//
-
-    // Update v1: find car by id or regNr-arg in request body, then update found car
     public Car updateCar(Car car) {
 
         // Get car to update with id if exists, else get with reg.nr if that exists
@@ -81,6 +67,53 @@ public class CarService implements CarServiceRepository {
 
         // Save, i.e. update existing car, with new (and eventual old) passed in values
         return carRepository.save(carToUpdate);
+    }
+
+    @Override
+    public void deleteCar(Car car) {
+        // Get car to delete with id if exists, else get with reg.nr if that exists
+        Optional<Car> foundById = carRepository.findById(car.getId());
+        Optional<Car> foundByRegNr = carRepository.findByRegNr(car.getRegNr());
+        if (foundById.isEmpty() && foundByRegNr.isEmpty()) {
+            throw new RuntimeException("Car with id " + car.getId()
+                    + " or reg. nr " + car.getRegNr() + " not found");
+        }
+
+        // Then, if either id or reg.nr exists, get car by one of them
+        Car carToDelete = foundById.isPresent() ? carRepository.findById(car.getId()).get() :
+                carRepository.findByRegNr(car.getRegNr()).get();
+
+        // Update car before delete; remove all relations to any "order-children"
+        Car disassociatedCar = disassociateOrders(carToDelete.getId());
+        carRepository.delete(disassociatedCar);
+    }
+
+    // Manually removing relation the car's related orders before removing the car
+    // Otherwise a false reference to a removed car will remain in related order(s)
+    private Car disassociateOrders(int id) {
+        Car carToSaveAnReturn = carRepository.findById(id).get();
+        List<Order> associatedOrders = carToSaveAnReturn.getOrdersOfCar();
+        for (Order order : associatedOrders) {
+            Order orderToDisassociate = orderRepository.findById(order.getId()).get();
+            orderToDisassociate.setCarId(0); // 0 to show order has no car anymore
+            orderRepository.save(orderToDisassociate);
+        }
+        return carRepository.save(carToSaveAnReturn); // Save update, & return
+    }
+
+
+    //-----------------------------------------------------------------------//
+    //---------------------- NOT PROJECT REQUIREMENTS -----------------------//
+    //-----------------------------------------------------------------------//
+
+    @Override
+    public Car getCarById(int id) {
+        Optional<Car> foundCar = carRepository.findById(id);
+        if (foundCar.isPresent()) {
+            return foundCar.get();
+        } else {
+            throw new RuntimeException("Car with id " + id + " not found.");
+        }
     }
 
     // Update v2: find car by id from path-url, then update found car
@@ -111,28 +144,6 @@ public class CarService implements CarServiceRepository {
         return carRepository.save(carToUpdate);
     }
 
-
-    //--------------- DELETE -----------------//
-
-    @Override
-    public void deleteCar(Car car) {
-        // Get car to delete with id if exists, else get with reg.nr if that exists
-        Optional<Car> foundById = carRepository.findById(car.getId());
-        Optional<Car> foundByRegNr = carRepository.findByRegNr(car.getRegNr());
-        if (foundById.isEmpty() && foundByRegNr.isEmpty()) {
-            throw new RuntimeException("Car with id " + car.getId()
-                    + " or reg. nr " + car.getRegNr() + " not found");
-        }
-
-        // Then, if either id or reg.nr exists, get car by one of them
-        Car carToDelete = foundById.isPresent() ? carRepository.findById(car.getId()).get() :
-                carRepository.findByRegNr(car.getRegNr()).get();
-
-        // Update car before delete; remove all relations to any "order-children"
-        Car disassociatedCar = disassociateOrders(carToDelete.getId());
-        carRepository.delete(disassociatedCar);
-    }
-
     @Override
     public void deleteCarById(int id) {
         carRepository.findById(id).orElseThrow(
@@ -142,19 +153,5 @@ public class CarService implements CarServiceRepository {
         Car disassociatedCar = disassociateOrders(id);
         carRepository.delete(disassociatedCar);
     }
-
-    // Manually removing relation the car's related orders before removing the car
-    // Otherwise a false reference to a removed car will remain in related order(s)
-    private Car disassociateOrders(int id) {
-       Car carToSaveAnReturn = carRepository.findById(id).get();
-        List<Order> associatedOrders = carToSaveAnReturn.getOrdersOfCar();
-        for (Order order : associatedOrders) {
-            Order orderToDisassociate = orderRepository.findById(order.getId()).get();
-            orderToDisassociate.setCarId(0); // 0 to show order has no car anymore
-            orderRepository.save(orderToDisassociate);
-        }
-        return carRepository.save(carToSaveAnReturn); // Save update, & return
-    }
-
 
 }

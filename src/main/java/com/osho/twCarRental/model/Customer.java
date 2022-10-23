@@ -1,6 +1,5 @@
 package com.osho.twCarRental.model;
 
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -45,19 +44,6 @@ public class Customer {
     // Constructor without ID
     public Customer(String ssn, LocalDate dateOfBirth, String email, String fName,
                     String lName, String address, List<Order> ordersByCustomer) {
-        this.ssn = ssn;
-        this.dateOfBirth = dateOfBirth;
-        this.email = email;
-        this.fName = fName;
-        this.lName = lName;
-        this.address = address;
-        this.ordersByCustomer = ordersByCustomer;
-    }
-
-    // Constructor with ID
-    public Customer(int id, String ssn, LocalDate dateOfBirth, String email,
-                    String fName, String lName, String address, List<Order> ordersByCustomer) {
-        this.id = id;
         this.ssn = ssn;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
@@ -127,7 +113,7 @@ public class Customer {
         return ordersByCustomer;
     }
 
-    public void setCarOrders(List<Order> ordersByCustomer) {
+    public void setOrdersByCustomer(List<Order> ordersByCustomer) {
         this.ordersByCustomer = ordersByCustomer;
     }
 }

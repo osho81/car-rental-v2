@@ -2,7 +2,6 @@ package com.osho.twCarRental.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;;
 
 @Entity
@@ -21,8 +20,7 @@ public class Car {
     private String model; // BMW, Audi etc.
 
     @Column(name = "type")
-//    private String type; // SUV, van, sedan
-    private String type; // Corresponds to sql type set() choices
+    private String type;
 
     @Column(name = "model_year")
     private int modelYear;
@@ -102,19 +100,4 @@ public class Car {
     public void setOrdersOfCar(List<Order> ordersOfCar) {
         this.ordersOfCar = ordersOfCar;
     }
-
-
-    @Override
-    public String toString() {
-        return "Car{" +
-                "id=" + id +
-                ", regNr='" + regNr + '\'' +
-                ", model='" + model + '\'' +
-                ", type='" + type + '\'' +
-                ", modelYear=" + modelYear +
-                ", dailySek=" + dailySek +
-                ", carOrders=" + Arrays.toString(ordersOfCar.toArray()) +
-                '}';
-    }
-
 }

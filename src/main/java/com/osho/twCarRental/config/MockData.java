@@ -1,7 +1,6 @@
 package com.osho.twCarRental.config;
 
 import com.osho.twCarRental.model.Car;
-import com.osho.twCarRental.model.CarType;
 import com.osho.twCarRental.model.Customer;
 import com.osho.twCarRental.model.Order;
 import com.osho.twCarRental.repository.CarRepository;
@@ -10,18 +9,12 @@ import com.osho.twCarRental.repository.OrderRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor;
-
-import javax.xml.transform.sax.SAXSource;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -73,9 +66,9 @@ public class MockData {
 
             ////------- Create several Car mock data -------////
             // name() for converting enum CarType to string
-            Car car1 = new Car("abc123", "bmw", CarType.SEDAN.name(), 2020, 500, null);
-            Car car2 = new Car("bcd234", "audi", CarType.SEDAN.name(), 2021, 600, null);
-            Car car3 = new Car("cde345", "volvo", CarType.SUV.name(), 2022, 700, null);
+            Car car1 = new Car("abc123", "bmw", "sedan", 2020, 400, null);
+            Car car2 = new Car("bcd234", "audi", "mini", 2021, 300, null);
+            Car car3 = new Car("cde345", "volvo", "suv", 2022, 500, null);
 
             // Initial method for not adding already existing Cars (when ddl=update)
             ArrayList<Car> mockCarList = new ArrayList<Car>();
@@ -164,16 +157,18 @@ public class MockData {
 
             ////-------- Add saved Orders to pertinent Cars -------////
 
-            Optional<Car> tempCar2a = carRepository.findByRegNr("bcd234"); // In one order
+            Optional<Car> tempCar2a = carRepository.findByRegNr("bcd234");
             if (tempCar2a.isPresent()) {
+                // In one order
                 tempCar2a.get().setOrdersOfCar(List.of(orderRepository.findByOrderNr("1001").orElse(null)));
                 carRepository.save(tempCar2a.get());
             } else {
                 System.out.println("Not applicable");
             }
 
-            Optional<Car> tempCar3a = carRepository.findByRegNr("cde345"); // In two orders
+            Optional<Car> tempCar3a = carRepository.findByRegNr("cde345");
             if (tempCar3a.isPresent()) {
+                // In two orders
                 tempCar3a.get().setOrdersOfCar(List.of(orderRepository.findByOrderNr("1002").orElse(null),
                         orderRepository.findByOrderNr("1003").orElse(null)));
                 carRepository.save(tempCar3a.get());

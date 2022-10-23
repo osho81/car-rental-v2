@@ -10,5 +10,4 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
     // Customized methods
     Optional<Car> findByRegNr(String regNr);
 
-
 }

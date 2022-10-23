@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface CustomerServiceRepository {
 
-    //-------- READ (GET) --------//
     Customer getCustomerById(int id);
     List<Customer> getAllCustomers();
 

@@ -5,21 +5,16 @@ import java.util.List;
 
 public interface CarServiceRepository {
 
-    //------- READ (GET) -------//
-    Car getCarById(int id);
+    //---- PROJECT REQUIREMENTS ----//
     List<Car> getAllCars();
-
-    //------ CREATE (SAVE) ------//
     Car addCar(Car car);
-
-    //--------- UPDATE ----------//
     Car updateCar(Car car);
-    Car updateCarById(int id, Car car);
-
-    //--------- DELETE ----------//
-
     void deleteCar(Car car);
 
+
+    //-- NOT PROJECT REQUIREMENTS --//
+    Car getCarById(int id);
+    Car updateCarById(int id, Car car);
     void deleteCarById(int id);
 
 }
