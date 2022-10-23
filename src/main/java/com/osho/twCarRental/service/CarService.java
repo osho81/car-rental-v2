@@ -1,7 +1,9 @@
 package com.osho.twCarRental.service;
 
 import com.osho.twCarRental.model.Car;
+import com.osho.twCarRental.model.Order;
 import com.osho.twCarRental.repository.CarRepository;
+import com.osho.twCarRental.repository.OrderRepository;
 import com.osho.twCarRental.service.repository.CarServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ public class CarService implements CarServiceRepository {
 
     @Autowired
     private CarRepository carRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     //--------------- READ (GET) -----------------//
 
@@ -111,22 +116,44 @@ public class CarService implements CarServiceRepository {
 
     @Override
     public void deleteCar(Car car) {
-        // Directly using id from json body
-//        carRepository.findById(car.getId()).orElseThrow(
-//                () -> new RuntimeException("Car with id " + car.getId() + " not found."));
-//        carRepository.deleteById(car.getId());
+        // Get car to delete with id if exists, else get with reg.nr if that exists
+        Optional<Car> foundById = carRepository.findById(car.getId());
+        Optional<Car> foundByRegNr = carRepository.findByRegNr(car.getRegNr());
+        if (foundById.isEmpty() && foundByRegNr.isEmpty()) {
+            throw new RuntimeException("Car with id " + car.getId()
+                    + " or reg. nr " + car.getRegNr() + " not found");
+        }
 
-        // Finding car to delete with other field from json body
-        Car carToDelete = carRepository.findByRegNr(car.getRegNr()).orElseThrow(
-                () -> new RuntimeException("Car with reg. nr " + car.getRegNr() + " not found"));
-        carRepository.deleteById(carToDelete.getId());
+        // Then, if either id or reg.nr exists, get car by one of them
+        Car carToDelete = foundById.isPresent() ? carRepository.findById(car.getId()).get() :
+                carRepository.findByRegNr(car.getRegNr()).get();
+
+        // Update car before delete; remove all relations to any "order-children"
+        Car disassociatedCar = disassociateOrders(carToDelete.getId());
+        carRepository.delete(disassociatedCar);
     }
 
     @Override
     public void deleteCarById(int id) {
         carRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Car with id " + id + " not found."));
-        carRepository.deleteById(id);
+
+        // Update car before delete; remove all relations to any "order-children"
+        Car disassociatedCar = disassociateOrders(id);
+        carRepository.delete(disassociatedCar);
+    }
+
+    // Manually removing relation the car's related orders before removing the car
+    // Otherwise a false reference to a removed car will remain in related order(s)
+    private Car disassociateOrders(int id) {
+       Car carToSaveAnReturn = carRepository.findById(id).get();
+        List<Order> associatedOrders = carToSaveAnReturn.getOrdersOfCar();
+        for (Order order : associatedOrders) {
+            Order orderToDisassociate = orderRepository.findById(order.getId()).get();
+            orderToDisassociate.setCarId(0); // 0 to show order has no car anymore
+            orderRepository.save(orderToDisassociate);
+        }
+        return carRepository.save(carToSaveAnReturn); // Save update, & return
     }
 
 
