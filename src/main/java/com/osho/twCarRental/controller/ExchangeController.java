@@ -7,15 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/change")
+@RequestMapping(path = "/change")
 public class ExchangeController {
 
     @Autowired
     private ExchangeService exchangeService;
 
     @GetMapping
-    public ResponseTemplateVO getChanged(@RequestBody Order order) {
-        return exchangeService.getExchangeInfo(order.getId());
+    public ResponseTemplateVO getExchanged(@RequestBody Order order) {
+        System.out.println("Inside TW main project method in exchange controller");
+        return exchangeService.getExchangeService(order.getId());
     }
 
 }

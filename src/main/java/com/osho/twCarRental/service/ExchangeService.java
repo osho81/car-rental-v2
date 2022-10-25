@@ -20,16 +20,20 @@ public class ExchangeService {
     private RestTemplate restTemplate;
 
 
-    public ResponseTemplateVO getExchangeInfo(int orderId) {
+    public ResponseTemplateVO getExchangeService(int orderId) {
+        System.out.println("I am in TW main project exchange service method");
         ResponseTemplateVO vo = new ResponseTemplateVO();
-        Order actualOrder = orderRepository.findById(orderId).orElseGet(
-                () -> {
-                    throw new RuntimeException("Order with id " + orderId + " not found");
-                });
+        Order actualOrder = orderRepository.findById(orderId).get();
+
+//                .orElseGet(
+//                () -> {
+//                    throw new RuntimeException("Order with id " + orderId + " not found");
+//                });
+
+        double amount = actualOrder.getPrice();
 
         // Use application name for microservice, instead of localhost...
-        // Pass in Exchange class, to extract needed fields from at the exchange microservice side
-        Exchange exchange = restTemplate.getForObject("http://EXCHANGE-SERVICE//exchange/sekeur", Exchange.class);
+        Exchange exchange = restTemplate.getForObject("http://EXCHANGE-SERVICE/exchange/" + amount, Exchange.class);
 
         vo.setOrder(actualOrder);
         vo.setExchange(exchange);
