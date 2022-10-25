@@ -1,0 +1,35 @@
+package com.osho.twCarRental.valueobject;
+
+import com.osho.twCarRental.model.Order;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ResponseTemplateVO {
+
+    private Order order;
+    private Exchange exchange;
+
+    public ResponseTemplateVO() {
+    }
+
+    public ResponseTemplateVO(Order order, Exchange exchange) {
+        this.order = order;
+        this.exchange = exchange;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Exchange getExchange() {
+        return exchange;
+    }
+
+    public void setExchange(Exchange exchange) {
+        this.exchange = exchange;
+    }
+}
