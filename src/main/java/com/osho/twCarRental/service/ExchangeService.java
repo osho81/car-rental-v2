@@ -25,11 +25,6 @@ public class ExchangeService {
         ResponseTemplateVO vo = new ResponseTemplateVO();
         Order actualOrder = orderRepository.findById(orderId).get();
 
-//                .orElseGet(
-//                () -> {
-//                    throw new RuntimeException("Order with id " + orderId + " not found");
-//                });
-
         double amount = actualOrder.getPrice();
 
         // Use application name for microservice, instead of localhost...
