@@ -103,8 +103,8 @@ public class MockData {
                     LocalDate.of(2022, Month.DECEMBER, 19),
                     customer1.getId(),
                     car2.getId(),
-                    0, 0
-                    // Price and numOfDays as 0; use setters to set them
+                    0, 0, 0
+                    // Price, numOfDays, priceInEuro is 0 here; then use setters to set them
             );
             Order order2 = new Order(
                     "1002",
@@ -113,7 +113,7 @@ public class MockData {
                     LocalDate.of(2023, Month.JANUARY, 8),
                     customer3.getId(),
                     car3.getId(),
-                    0, 0
+                    0, 0, 0
             );
             Order order3 = new Order(
                     "1003",
@@ -122,7 +122,7 @@ public class MockData {
                     LocalDate.of(2023, Month.JANUARY, 10),
                     customer3.getId(),
                     car3.getId(),
-                    0, 0
+                    0, 0, 0
             );
 
             // Initial method for not adding already existing Orders (when ddl=update)

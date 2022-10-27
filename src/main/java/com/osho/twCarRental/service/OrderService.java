@@ -85,7 +85,8 @@ public class OrderService implements OrderServiceRepository {
                     order.getCustomerId(),
                     order.getCarId(),
                     tempPrice,
-                    tempNumOfDays
+                    tempNumOfDays,
+                    0 // price in euro is zero at first
             ));
         }
     }
@@ -166,7 +167,8 @@ public class OrderService implements OrderServiceRepository {
                 orderToDelete.getCustomerId(),
                 orderToDelete.getCarId(),
                 orderToDelete.getPrice(),
-                orderToDelete.getNumberOfDays()
+                orderToDelete.getNumberOfDays(),
+                orderToDelete.getPriceInEuro()
         ));
 
         // Delete original order

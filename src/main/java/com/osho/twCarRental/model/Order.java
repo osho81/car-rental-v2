@@ -36,20 +36,24 @@ public class Order {
     @Column(name = "num_of_days")
     private int numberOfDays;
 
+    @Column(name = "price_in_eur")
+    private Double priceInEuro; // Double to easy issue in mockdata
+
 
     public Order() {
     }
 
     public Order(String orderNr, LocalDateTime orderOrUpdateTime, LocalDate firstRentalDay, LocalDate lastRentalDay,
-                 int customerId, int carId, double price, int numberOfDays) {
+                 int customerId, int carId, double price, int numberOfDays, double priceInEuro) {
         this.orderNr = orderNr;
         this.orderOrUpdateTime = orderOrUpdateTime.withNano(0); // Remove nano seconds
         this.firstRentalDay = firstRentalDay;
         this.lastRentalDay = lastRentalDay;
         this.customerId = customerId;
         this.carId = carId;
-        this.numberOfDays = numberOfDays;
         this.price = price;
+        this.numberOfDays = numberOfDays;
+        this.priceInEuro = priceInEuro;
     }
 
     public int getId() {
@@ -124,4 +128,11 @@ public class Order {
         this.numberOfDays = numberOfDays;
     }
 
+    public double getPriceInEuro() {
+        return priceInEuro;
+    }
+
+    public void setPriceInEuro(double priceInEuro) {
+        this.priceInEuro = priceInEuro;
+    }
 }

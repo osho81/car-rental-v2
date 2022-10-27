@@ -2,16 +2,17 @@ package com.osho.twCarRental.service;
 
 import com.osho.twCarRental.model.Order;
 import com.osho.twCarRental.repository.OrderRepository;
+import com.osho.twCarRental.service.repository.ExchangeServiceRepository;
 import com.osho.twCarRental.valueobject.Exchange;
 import com.osho.twCarRental.valueobject.ResponseTemplateVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Optional;
+// Class with method calling Exchange microservice, via the gateway
 
 @Service
-public class ExchangeService {
+public class ExchangeService implements ExchangeServiceRepository {
 
     @Autowired
     private OrderRepository orderRepository;
@@ -19,19 +20,24 @@ public class ExchangeService {
     @Autowired
     private RestTemplate restTemplate;
 
-
+    @Override
     public ResponseTemplateVO getExchangeService(int orderId) {
-        System.out.println("I am in TW main project exchange service method");
+        System.out.println("I am in TW main project exchange service method"); // Control print
         ResponseTemplateVO vo = new ResponseTemplateVO();
         Order actualOrder = orderRepository.findById(orderId).get();
 
-        double amount = actualOrder.getPrice();
+        double amount = actualOrder.getPrice(); // Extract amount from found order obj
 
-        // Use application name for microservice, instead of localhost...
+        // Use application name for microservice, instead of localhost/port; pass amount as url-var
         Exchange exchange = restTemplate.getForObject("http://EXCHANGE-SERVICE/change/" + amount, Exchange.class);
 
-        vo.setOrder(actualOrder);
-        vo.setExchange(exchange);
+        // Optionally update price in euro in the order and exchange date, for later reference
+        actualOrder.setPriceInEuro(exchange.getAmountInEur());
+        orderRepository.save(actualOrder);
+
+        vo.setOrder(actualOrder); // Add the order to full response
+        vo.setExchange(exchange); // Add the exchange details to full response
+
         return vo;
     }
 
