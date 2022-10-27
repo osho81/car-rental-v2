@@ -28,7 +28,7 @@ public class ExchangeService {
         double amount = actualOrder.getPrice();
 
         // Use application name for microservice, instead of localhost...
-        Exchange exchange = restTemplate.getForObject("http://EXCHANGE-SERVICE/exchange/" + amount, Exchange.class);
+        Exchange exchange = restTemplate.getForObject("http://EXCHANGE-SERVICE/change/" + amount, Exchange.class);
 
         vo.setOrder(actualOrder);
         vo.setExchange(exchange);
