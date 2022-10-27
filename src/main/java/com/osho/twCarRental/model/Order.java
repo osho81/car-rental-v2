@@ -36,8 +36,9 @@ public class Order {
     @Column(name = "num_of_days")
     private int numberOfDays;
 
+    // Double type to easy null at start in mockdata
     @Column(name = "price_in_eur")
-    private Double priceInEuro; // Double to easy issue in mockdata
+    private Double priceInEuro;
 
 
     public Order() {
