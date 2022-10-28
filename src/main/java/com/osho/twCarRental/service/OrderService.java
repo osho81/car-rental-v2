@@ -35,6 +35,7 @@ public class OrderService implements OrderServiceRepository {
 
     @Override
     public List<Order> getMyOrders(Customer customer) {
+
         // Find customer, then get the associated orders list
         Optional<Customer> foundCustomerById = customerRepository.findById(customer.getId());
         Optional<Customer> foundCustomerByEmail = customerRepository.findByEmail(customer.getEmail());
@@ -43,6 +44,7 @@ public class OrderService implements OrderServiceRepository {
             throw new RuntimeException("Customer with id " + customer.getId()
                     + " or email " + customer.getEmail() + " not found");
         }
+        // Else get customer by either customer id or email, then get customer's order list
         List<Order> customerOrderList = foundCustomerById.isPresent() ? foundCustomerById.get().getOrdersByCustomer() :
         foundCustomerByEmail.get().getOrdersByCustomer();
         return customerOrderList;
@@ -126,7 +128,6 @@ public class OrderService implements OrderServiceRepository {
         double tempPrice;
         if (carRepository.findById(tempCarId).isPresent()) {
             tempPrice = tempNumOfDays * carRepository.findById(tempCarId).orElse(null).getDailySek();
-            System.out.println("first" + tempPrice);
         } else {
             throw new RuntimeException("Please enter car id of ordered car.");
         }
