@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
-@EnableEurekaClient // Manually added; might need
+@EnableEurekaClient
 @SpringBootApplication
 public class WigellCarRentalApplication {
 
