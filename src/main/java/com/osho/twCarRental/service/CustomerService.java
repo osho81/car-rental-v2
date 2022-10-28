@@ -44,8 +44,8 @@ public class CustomerService implements CustomerServiceRepository {
         Optional<Customer> foundById = customerRepository.findById(customer.getId());
         Optional<Customer> foundByEmail = customerRepository.findByEmail(customer.getEmail());
         if (foundById.isEmpty() && foundByEmail.isEmpty()) {
-            throw new RuntimeException("Order with id " + customer.getId()
-                    + " or order nr " + customer.getEmail() + " not found");
+            throw new RuntimeException("Customer with id " + customer.getId()
+                    + " and/or email " + customer.getEmail() + " not found");
         }
 
         // Then, if either id or email exists, get customer by one of them, and delete

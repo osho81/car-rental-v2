@@ -38,7 +38,7 @@ public class CustomerController {
     public ResponseEntity<String> deleteOrder(@RequestBody Customer customer) {
         customerService.deleteCustomer(customer);
         return new ResponseEntity<String>("Customer with " +
-                (customer.getId() == 0 ? "email " : "with id " + customer.getId() + " and email ") +
+                (customer.getId() == 0 ? "email " : "with id " + customer.getId() + " and/or email ") +
                 customer.getEmail() + " deleted.", HttpStatus.OK);
     }
 

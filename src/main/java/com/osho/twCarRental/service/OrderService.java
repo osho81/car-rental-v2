@@ -50,7 +50,7 @@ public class OrderService implements OrderServiceRepository {
     public Order orderCar(Order order) {
         Optional<Order> foundOrder = orderRepository.findByOrderNr(order.getOrderNr());
         if (foundOrder.isPresent()) {
-            throw new RuntimeException(order.getOrderNr() + " already exists.");
+            throw new RuntimeException("Order nr " + order.getOrderNr() + " already exists.");
         } else {
             // Temp date/time field, in case request-body is missing time of order
             LocalDateTime tempDateTime;
@@ -100,12 +100,18 @@ public class OrderService implements OrderServiceRepository {
                     + " or order nr " + order.getOrderNr() + " not found");
         }
 
-        // Then, if either id or reg.nr exists, get order by one of them
+        // If either id or reg.nr exists (and orderNr is unique), get order by one of them
         Order orderToUpdate = foundById.isPresent() ? orderRepository.findById(order.getId()).get() :
                 orderRepository.findByOrderNr(order.getOrderNr()).get();
 
-        //----- Add new value to each column, but keep old value if new is null/empty -----//
-        orderToUpdate.setOrderNr(order.getOrderNr() == null ? orderToUpdate.getOrderNr() : order.getOrderNr());
+        //----- Add new value to each column, but keep old value if new is null/empty etc. -----//
+
+        // Make sure not to update into orderNr that already exists
+        if (foundByOrderNr.isPresent()) {
+            orderToUpdate.setOrderNr(orderToUpdate.getOrderNr());
+        } else {
+            orderToUpdate.setOrderNr(order.getOrderNr());
+        }
 
         LocalDateTime tempDateTime; // See comments in orderCar() methods
         if (order.getOrderOrUpdateTime() == null) {
