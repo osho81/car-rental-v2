@@ -23,7 +23,9 @@ public class ExchangeService implements ExchangeServiceRepository {
     @Override
     public ResponseTemplateVO getExchangeService(int orderId) {
         System.out.println("I am in TW main project exchange service method"); // Control print
-        ResponseTemplateVO vo = new ResponseTemplateVO();
+
+        ResponseTemplateVO vo = new ResponseTemplateVO(); // Enabling full/combined response
+
         Order actualOrder = orderRepository.findById(orderId).get();
 
         double amount = actualOrder.getPrice(); // Extract amount from found order obj
@@ -40,7 +42,5 @@ public class ExchangeService implements ExchangeServiceRepository {
 
         return vo;
     }
-
-
 
 }

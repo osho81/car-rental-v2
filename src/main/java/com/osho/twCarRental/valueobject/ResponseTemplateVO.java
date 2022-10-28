@@ -3,6 +3,8 @@ package com.osho.twCarRental.valueobject;
 import com.osho.twCarRental.model.Order;
 import org.springframework.stereotype.Service;
 
+// Template class for handling full/combined response from exchange service
+
 @Service
 public class ResponseTemplateVO {
 
