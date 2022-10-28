@@ -40,7 +40,7 @@ public class OrderService implements OrderServiceRepository {
             throw new RuntimeException("Customer with id " + customer.getId()
                     + " or email " + customer.getEmail() + " not found");
         }
-        // Else get customer by either customer id or email, then get customer's order list
+        // If found get customer by customer id or email, then get that customer's order list
         List<Order> customerOrderList = foundCustomerById.isPresent() ? foundCustomerById.get().getOrdersByCustomer() :
         foundCustomerByEmail.get().getOrdersByCustomer();
         return customerOrderList;
@@ -84,7 +84,7 @@ public class OrderService implements OrderServiceRepository {
                     order.getCarId(),
                     tempPrice,
                     tempNumOfDays,
-                    0 // price in euro is zero at first
+                    0 // price in euro is zero at first (see exchange service)
             ));
         }
     }
