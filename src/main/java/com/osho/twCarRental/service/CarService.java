@@ -21,10 +21,6 @@ public class CarService implements CarServiceRepository {
     @Autowired
     private OrderRepository orderRepository;
 
-    //-----------------------------------------------------------------------//
-    //------------------------- PROJECT REQUIREMENTS ------------------------//
-    //-----------------------------------------------------------------------//
-
     @Override
     public List<Car> getAllCars() {
         return carRepository.findAll();
@@ -63,6 +59,8 @@ public class CarService implements CarServiceRepository {
         carToUpdate.setModelYear(car.getModelYear() > Integer.parseInt(LocalDate.now().toString().substring(0,4))+1 ||
                 car.getModelYear() == 0 ? carToUpdate.getModelYear() : car.getModelYear());
         carToUpdate.setDailySek(car.getDailySek() == 0 ? carToUpdate.getDailySek() : car.getDailySek());
+
+        // TODO: if ordersOfCar.length == 0 or null, use old orderslist
 //        carToUpdate.setOrdersOfCar(car.getOrdersOfCar());
 
         // Save, i.e. update existing car, with new (and eventual old) passed in values
@@ -99,59 +97,6 @@ public class CarService implements CarServiceRepository {
             orderRepository.save(orderToDisassociate);
         }
         return carRepository.save(carToSaveAnReturn); // Save update, & return
-    }
-
-
-    //-----------------------------------------------------------------------//
-    //---------------------- NOT PROJECT REQUIREMENTS -----------------------//
-    //-----------------------------------------------------------------------//
-
-    @Override
-    public Car getCarById(int id) {
-        Optional<Car> foundCar = carRepository.findById(id);
-        if (foundCar.isPresent()) {
-            return foundCar.get();
-        } else {
-            throw new RuntimeException("Car with id " + id + " not found.");
-        }
-    }
-
-    // Update v2: find car by id from path-url, then update found car
-    @Override
-    public Car updateCarById(int id, Car car) {
-        // Get car with id to update, if exists
-        Car carToUpdate = carRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Car with id " + id + " not found"));
-
-        // Add new value to each column; but first check if reg. nr is occupied
-        Optional<Car> foundByRegNr = carRepository.findByRegNr(car.getRegNr());
-        if (foundByRegNr.isPresent()) {
-            throw new RuntimeException(car.getRegNr() + " is occupied");
-        } else if (car.getRegNr().isEmpty() || car.getRegNr() == null) {
-            throw new RuntimeException("RegNr-field is empty");
-        } else {
-            // If regNr-field is not empty and not occupied: Set new regNr value
-            carToUpdate.setRegNr(car.getRegNr());
-        }
-
-        carToUpdate.setModel(car.getModel());
-        carToUpdate.setType(car.getType());
-        carToUpdate.setModelYear(car.getModelYear());
-        carToUpdate.setDailySek(car.getDailySek());
-        carToUpdate.setOrdersOfCar(car.getOrdersOfCar());
-
-        // Save, i.e. update existing car, with new passed in values
-        return carRepository.save(carToUpdate);
-    }
-
-    @Override
-    public void deleteCarById(int id) {
-        carRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Car with id " + id + " not found."));
-
-        // Update car before delete; remove all relations to any "order-children"
-        Car disassociatedCar = disassociateOrders(id);
-        carRepository.delete(disassociatedCar);
     }
 
 }

@@ -11,7 +11,6 @@ public interface CustomerServiceRepository {
 
 
     //-- NOT PROJECT REQUIREMENTS --//
-    Customer getCustomerById(int id);
     Customer addCustomer(Customer customer);
     void deleteCustomer(Customer customer);
 }

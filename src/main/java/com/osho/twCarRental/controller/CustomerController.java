@@ -18,24 +18,16 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    //-----------------------------------------------------------------------//
     //------------------------- PROJECT REQUIREMENTS ------------------------//
-    //-----------------------------------------------------------------------//
 
     // "Lista kunder GET /api/v1/customers"
-    @GetMapping("/customers")
+    @GetMapping("/customers") // USER ROLE REQUIRED
     public ResponseEntity<List<Customer>> getAllCustomers() {
         return new ResponseEntity<List<Customer>>(customerService.getAllCustomers(), HttpStatus.OK);
     }
 
 
-    //-----------------------------------------------------------------------//
     //---------------------- NOT PROJECT REQUIREMENTS -----------------------//
-    //-----------------------------------------------------------------------//
-    @GetMapping("/customers/{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable int id) {
-        return new ResponseEntity<Customer>(customerService.getCustomerById(id), HttpStatus.OK);
-    }
 
     @PostMapping("/addcustomer")
     public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {

@@ -39,7 +39,6 @@ public class Order {
     @Column(name = "price_in_eur")
     private double priceInEuro;
 
-
     public Order() {
     }
 

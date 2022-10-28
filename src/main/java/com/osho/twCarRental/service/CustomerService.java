@@ -17,9 +17,7 @@ public class CustomerService implements CustomerServiceRepository {
     @Autowired
     private CustomerRepository customerRepository;
 
-    //-----------------------------------------------------------------------//
     //------------------------- PROJECT REQUIREMENTS ------------------------//
-    //-----------------------------------------------------------------------//
 
     @Override
     public List<Customer> getAllCustomers() {
@@ -27,19 +25,7 @@ public class CustomerService implements CustomerServiceRepository {
     }
 
 
-    //-----------------------------------------------------------------------//
     //---------------------- NOT PROJECT REQUIREMENTS -----------------------//
-    //-----------------------------------------------------------------------//
-
-    @Override
-    public Customer getCustomerById(int id) {
-        Optional<Customer> foundCustomer = customerRepository.findById(id);
-        if (foundCustomer.isPresent()) {
-            return foundCustomer.get();
-        } else {
-            throw new RuntimeException("Person with id " + id + " not found.");
-        }
-    }
 
     @Override
     public Customer addCustomer(Customer customer) {

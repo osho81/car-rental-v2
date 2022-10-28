@@ -29,10 +29,6 @@ public class OrderService implements OrderServiceRepository {
     @Autowired
     CarRepository carRepository;
 
-    //-----------------------------------------------------------------------//
-    //------------------------- PROJECT REQUIREMENTS ------------------------//
-    //-----------------------------------------------------------------------//
-
     @Override
     public List<Order> getMyOrders(Customer customer) {
 
@@ -174,74 +170,6 @@ public class OrderService implements OrderServiceRepository {
 
         // Delete original order
         orderRepository.delete(orderToDelete);
-
-
     }
-
-
-    //-----------------------------------------------------------------------//
-    //---------------------- NOT PROJECT REQUIREMENTS -----------------------//
-    //-----------------------------------------------------------------------//
-
-    @Override
-    public List<Order> getOrdersByEmail(String email) {
-        // Find customer, then get the associated orders list
-        Optional<Customer> foundCustomer = customerRepository.findByEmail(email);
-        if (foundCustomer.isPresent()) {
-            return foundCustomer.get().getOrdersByCustomer();
-        } else {
-            throw new RuntimeException("No user with email " + email);
-        }
-    }
-
-    @Override
-    public Order getOrderById(int id) {
-        Optional<Order> foundOrder = orderRepository.findById(id);
-        if (foundOrder.isPresent()) {
-            return foundOrder.get();
-        } else {
-            throw new RuntimeException("Order with id " + id + " not found.");
-        }
-    }
-
-    @Override
-    public Order getOrderByOrderNr(String orderNr) {
-        Optional<Order> foundOrder = orderRepository.findByOrderNr(orderNr);
-        if (foundOrder.isPresent()) {
-            return foundOrder.get();
-        } else {
-            throw new RuntimeException("Order with order nr " + orderNr + " not found.");
-        }
-    }
-
-    @Override
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
-    }
-
-    @Override
-    public void deleteOrder(Order order) {
-        // Get order to update with id if exists, else get with reg.nr if that exists
-        Optional<Order> foundById = orderRepository.findById(order.getId());
-        Optional<Order> foundByOrderNr = orderRepository.findByOrderNr(order.getOrderNr());
-        if (foundById.isEmpty() && foundByOrderNr.isEmpty()) {
-            throw new RuntimeException("Order with id " + order.getId()
-                    + " or order nr " + order.getOrderNr() + " not found");
-        }
-
-        // Then, if either id or order nr exists, get order by one of them, and delete
-        Order orderToUpdate = foundById.isPresent() ? orderRepository.findById(order.getId()).get() :
-                orderRepository.findByOrderNr(order.getOrderNr()).get();
-
-        orderRepository.delete(orderToUpdate);
-    }
-
-    @Override
-    public void deleteOrderById(int id) {
-        orderRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Order with id " + id + " not found."));
-        orderRepository.deleteById(id);
-    }
-
 
 }
