@@ -1,7 +1,6 @@
 package com.osho.twCarRental.service;
 
 import com.osho.twCarRental.model.Customer;
-import com.osho.twCarRental.model.Order;
 import com.osho.twCarRental.repository.CustomerRepository;
 import com.osho.twCarRental.service.repository.CustomerServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;

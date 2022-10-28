@@ -1,8 +1,6 @@
 package com.osho.twCarRental.controller;
 
-import com.osho.twCarRental.model.Car;
 import com.osho.twCarRental.model.Customer;
-import com.osho.twCarRental.model.Order;
 import com.osho.twCarRental.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
