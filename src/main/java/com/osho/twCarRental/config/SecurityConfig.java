@@ -47,18 +47,20 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         super.configure(http);
         http
                 .authorizeRequests()
+
+                // User rights
                 .antMatchers("/api/v1/cars").hasRole("user")
                 .antMatchers("/api/v1/ordercar").hasRole("user")
                 .antMatchers("/api/v1/updateorder").hasRole("user")
                 .antMatchers("/api/v1/myorders").hasRole("user")
-                .antMatchers("/api/v1/cars").hasRole("user")
+                .antMatchers("/api/v1/exchange").hasRole("user")
 
-                .antMatchers("/api/v1//**").permitAll()
-                .antMatchers("/api/v1/person/{id}").hasRole("user")
-                .antMatchers(HttpMethod.POST).hasRole("admin")
-                .antMatchers(HttpMethod.PUT).hasAnyRole("admin", "user")
-//                .antMatchers(HttpMethod.DELETE).hasRole("admin")
-                .antMatchers("/api/v1/person/delete/{id}").hasRole("admin")
+                // Admin rights
+                .antMatchers("/api/v1/customers").hasRole("admin")
+                .antMatchers("/api/v1/addcar").hasRole("admin")
+                .antMatchers("/api/v1/deletecar").hasRole("admin")
+                .antMatchers("/api/v1/updatecar").hasRole("admin")
+                .antMatchers("/api/v1/cancelorder").hasRole("admin")
 
                 .anyRequest().authenticated();
         http.csrf().disable();
