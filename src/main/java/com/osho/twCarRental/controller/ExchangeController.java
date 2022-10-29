@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/exchange")
+@RequestMapping(path = "/api/v1/exchange")
 public class ExchangeController {
 
     @Autowired
