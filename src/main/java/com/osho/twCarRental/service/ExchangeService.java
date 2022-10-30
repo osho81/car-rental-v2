@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-// Class with method calling Exchange microservice, via the gateway
+// Class with method calling Exchange-microservice, via the gateway
 
 @Service
 public class ExchangeService implements ExchangeServiceRepository {
