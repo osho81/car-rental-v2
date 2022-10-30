@@ -41,7 +41,7 @@ public class OrderController {
         orderService.cancelOrder(order);
         return new ResponseEntity<String>("Order with " +
                 (order.getId() == 0 ? "order nr " : "id " + order.getId() + " and/or order nr ") +
-                order.getOrderNr() + " deleted.", HttpStatus.OK);
+                order.getOrderNr() + " cancelled.", HttpStatus.OK);
     }
 
 }
