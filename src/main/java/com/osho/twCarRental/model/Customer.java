@@ -11,7 +11,7 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "customerid")
+    @Column(name = "customer_id")
     private int id;
 
     @Column(name = "ssn", nullable = false)
@@ -33,7 +33,7 @@ public class Customer {
     private String address;
 
     // A customers can make multiple orders
-    // (Refers to variable name customerId in Order class, not the column name)
+    // (Refers to variable name customerId in Order class, not column name)
     @OneToMany(mappedBy = "customerId")
     private List<Order> ordersByCustomer = new ArrayList<>();
 

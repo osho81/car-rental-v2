@@ -1,7 +1,6 @@
 package com.osho.twCarRental.valueobject;
 
-
-// Mirroring object in exchange-service microservice
+// Used to take returned response values from Exchange microservice
 
 public class Exchange {
 

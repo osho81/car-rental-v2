@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/api/v1/exchange")
+@RequestMapping(path = "/api/v1")
 public class ExchangeController {
 
     @Autowired
     private ExchangeService exchangeService;
 
-    // calling service class method, to further reach the exchange microservice
-    @GetMapping // USER ROLE REQUIRED
+    // Requirement: En microservice ska implementeras* GET /api/v1/exchange
+    @GetMapping("/exchange") // USER ROLE REQUIRED
     public ResponseTemplateVO getExchanged(@RequestBody Order order) {
-        System.out.println("Inside TW main project method in exchange controller"); // Control print
+        // calling service class method, to further reach the exchange microservice
         return exchangeService.getExchangeService(order.getId());
     }
 

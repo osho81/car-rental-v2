@@ -18,7 +18,7 @@ public class CustomerController {
 
     //------------------------- PROJECT REQUIREMENTS ------------------------//
 
-    // "Lista kunder GET /api/v1/customers"
+    // Requirement: "Lista kunder GET /api/v1/customers"
     @GetMapping("/customers") // USER ROLE REQUIRED
     public ResponseEntity<List<Customer>> getAllCustomers() {
         return new ResponseEntity<List<Customer>>(customerService.getAllCustomers(), HttpStatus.OK);

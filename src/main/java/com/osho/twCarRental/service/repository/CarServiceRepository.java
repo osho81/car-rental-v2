@@ -1,7 +1,6 @@
 package com.osho.twCarRental.service.repository;
 
 import com.osho.twCarRental.model.Car;
-
 import java.util.List;
 
 public interface CarServiceRepository {

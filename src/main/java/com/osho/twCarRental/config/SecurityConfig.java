@@ -7,7 +7,6 @@ import org.keycloak.adapters.springsecurity.management.HttpSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
@@ -48,14 +47,14 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
 
-                // User rights
+                // User access and action rights
                 .antMatchers("/api/v1/cars").hasRole("user")
                 .antMatchers("/api/v1/ordercar").hasRole("user")
                 .antMatchers("/api/v1/updateorder").hasRole("user")
                 .antMatchers("/api/v1/myorders").hasRole("user")
                 .antMatchers("/api/v1/exchange").hasRole("user")
 
-                // Admin rights
+                // Admin access and action rights
                 .antMatchers("/api/v1/customers").hasRole("admin")
                 .antMatchers("/api/v1/addcar").hasRole("admin")
                 .antMatchers("/api/v1/deletecar").hasRole("admin")

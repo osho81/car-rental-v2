@@ -10,7 +10,7 @@ public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "carid")
+    @Column(name = "car_id")
     private int id;
 
     @Column(name = "regnr", nullable = false)
@@ -29,13 +29,15 @@ public class Car {
     private double dailySek; // SEK by default
 
     // A car can be in many orders, and vice versa
-    // (Refers to variable name carId in Order class, not the column name)
+    // (Refers to variable name carId in Order class, not column name)
     @OneToMany(mappedBy = "carId", cascade = CascadeType.PERSIST)
     private List<Order> ordersOfCar = new ArrayList<>();
 
+    // Empty constructor
     public Car() {
     }
 
+    // Constructor without ID
     public Car(String regNr, String model, String type, int modelYear, double dailySek, List<Order> ordersOfCar) {
         this.regNr = regNr;
         this.model = model;

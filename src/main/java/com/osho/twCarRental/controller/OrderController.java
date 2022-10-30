@@ -17,25 +17,25 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    // "Se tidigare och aktiva bokningar GET /api/v1/myorders"
+    // Requirement: "Se tidigare och aktiva bokningar GET /api/v1/myorders"
     @GetMapping("/myorders") // USER ROLE REQUIRED
     public ResponseEntity<List<Order>> getMyOrders(@RequestBody Customer customer) {
         return new ResponseEntity<List<Order>>(orderService.getMyOrders(customer), HttpStatus.OK);
     }
 
-    // "Boka hyrbil POST /api/v1/ordercar"
+    // Requirement: "Boka hyrbil POST /api/v1/ordercar"
     @PostMapping("/ordercar") // USER ROLE REQUIRED
     public ResponseEntity<Order> orderCar(@RequestBody Order order) {
         return new ResponseEntity<Order>(orderService.orderCar(order), HttpStatus.CREATED);
     }
 
-    // "Uppdatera order PUT /api/v1/updateorder"
+    // Requirement: "Uppdatera order PUT /api/v1/updateorder"
     @PutMapping("/updateorder") // USER ROLE REQUIRED
     public ResponseEntity<Order> updateOrder(@RequestBody Order order) {
         return new ResponseEntity<Order>(orderService.updateOrder(order), HttpStatus.CREATED);
     }
 
-    // "Avboka order PUT /api/v1/cancelorder"
+    // Requirement: "Avboka order PUT /api/v1/cancelorder"
     @DeleteMapping("/cancelorder") // ADMIN ROLE REQUIRED
     public ResponseEntity<String> cancelOrder(@RequestBody Order order) {
         orderService.cancelOrder(order);

@@ -54,13 +54,18 @@ public class CarService implements CarServiceRepository {
         carToUpdate.setRegNr(car.getRegNr() == null ? carToUpdate.getRegNr() : car.getRegNr());
         carToUpdate.setModel(car.getModel() == null ? carToUpdate.getModel() : car.getModel());
         carToUpdate.setType(car.getType() == null ? carToUpdate.getType() : car.getType());
+
         // Convert local-date year to (sub)string, capture year, then to parse to int: model year is max next year
         carToUpdate.setModelYear(car.getModelYear() > Integer.parseInt(LocalDate.now().toString().substring(0,4))+1 ||
                 car.getModelYear() == 0 ? carToUpdate.getModelYear() : car.getModelYear());
         carToUpdate.setDailySek(car.getDailySek() == 0 ? carToUpdate.getDailySek() : car.getDailySek());
 
-        // TODO: if ordersOfCar.length == 0 or null, use old orderslist
-//        carToUpdate.setOrdersOfCar(car.getOrdersOfCar());
+        // If car is not part of any order, set old value
+        if (car.getOrdersOfCar().isEmpty() || car.getOrdersOfCar() == null) {
+            carToUpdate.setOrdersOfCar(carToUpdate.getOrdersOfCar());
+        } else {
+            carToUpdate.setOrdersOfCar(car.getOrdersOfCar());
+        }
 
         // Save, i.e. update existing car, with new (and eventual old) passed in values
         return carRepository.save(carToUpdate);

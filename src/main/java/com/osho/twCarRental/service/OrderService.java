@@ -8,7 +8,6 @@ import com.osho.twCarRental.repository.OrderRepository;
 import com.osho.twCarRental.service.repository.OrderServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -34,10 +33,12 @@ public class OrderService implements OrderServiceRepository {
         Optional<Customer> foundCustomerById = customerRepository.findById(customer.getId());
         Optional<Customer> foundCustomerByEmail = customerRepository.findByEmail(customer.getEmail());
 
+        // If not found by id or email
         if (foundCustomerById.isEmpty() && foundCustomerByEmail.isEmpty()) {
             throw new RuntimeException("Customer with id " + customer.getId()
                     + " or email " + customer.getEmail() + " not found");
         }
+
         // If found get customer by customer id or email, then get that customer's order list
         List<Order> customerOrderList = foundCustomerById.isPresent() ? foundCustomerById.get().getOrdersByCustomer() :
         foundCustomerByEmail.get().getOrdersByCustomer();
@@ -46,10 +47,14 @@ public class OrderService implements OrderServiceRepository {
 
     @Override
     public Order orderCar(Order order) {
+
         Optional<Order> foundOrder = orderRepository.findByOrderNr(order.getOrderNr());
+
         if (foundOrder.isPresent()) {
             throw new RuntimeException("Order nr " + order.getOrderNr() + " already exists.");
         } else {
+            // Else if unique order nr, prepare the Order field values:
+
             // Temp date/time field, in case request-body is missing time of order
             LocalDateTime tempDateTime;
             if (order.getOrderOrUpdateTime() == null) {
@@ -102,7 +107,7 @@ public class OrderService implements OrderServiceRepository {
         Order orderToUpdate = foundById.isPresent() ? orderRepository.findById(order.getId()).get() :
                 orderRepository.findByOrderNr(order.getOrderNr()).get();
 
-        //----- Add new value to each column, but keep old value if new is null/empty etc. -----//
+        //---- Add new value to each column, but keep old value if new is null/empty etc. ----//
 
         // Make sure not to update into orderNr that already exists
         if (foundByOrderNr.isPresent()) {
@@ -111,7 +116,7 @@ public class OrderService implements OrderServiceRepository {
             orderToUpdate.setOrderNr(order.getOrderNr());
         }
 
-        LocalDateTime tempDateTime; // See comments in orderCar() methods
+        LocalDateTime tempDateTime;
         if (order.getOrderOrUpdateTime() == null) {
             tempDateTime = LocalDateTime.now();
         } else {
@@ -124,7 +129,7 @@ public class OrderService implements OrderServiceRepository {
                 ((int) DAYS.between(order.getFirstRentalDay(), order.getLastRentalDay()) + 1) : 1;
         int tempCarId = order.getCarId() == 0 ? orderToUpdate.getCarId() : order.getCarId();
 
-        // Calculate price, by getting number of days * price, if dates are not missing in body
+        // Calculate price, by getting number of days & price, if dates are not missing in body
         double tempPrice;
         if (carRepository.findById(tempCarId).isPresent()) {
             tempPrice = tempNumOfDays * carRepository.findById(tempCarId).orElse(null).getDailySek();
@@ -139,13 +144,13 @@ public class OrderService implements OrderServiceRepository {
         orderToUpdate.setPrice(tempPrice);
         orderToUpdate.setNumberOfDays(tempNumOfDays);
 
-        // Save, i.e. update existing order, with new (and eventual old) passed in values
+        // Save, i.e. update existing order, with the new (and eventual old) values
         return orderRepository.save(orderToUpdate);
     }
 
-
     @Override
     public void cancelOrder(Order order) {
+
         // Get order to update with id if exists, else get with order nr if that exists
         Optional<Order> foundById = orderRepository.findById(order.getId());
         Optional<Order> foundByOrderNr = orderRepository.findByOrderNr(order.getOrderNr());
@@ -158,7 +163,7 @@ public class OrderService implements OrderServiceRepository {
         Order orderToDelete = foundById.isPresent() ? orderRepository.findById(order.getId()).get() :
                 orderRepository.findByOrderNr(order.getOrderNr()).get();
 
-        // Save a "cancelled copy" of the deleted order; add "cancelled" to order nr
+        // Save a "cancelled copy" of the deleted order; add "cancelled" to order nr field
         // Use available method in this service class
         orderCar(new Order(
                 "CANCELLED" + orderToDelete.getOrderNr(),

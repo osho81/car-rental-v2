@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Optional;
 import static java.time.temporal.ChronoUnit.DAYS;
 
+// Mock data to ease the presentation to product owner & customer
+
 @Configuration
 public class MockData {
 
@@ -24,10 +26,9 @@ public class MockData {
     CommandLineRunner commandLineRunner(CustomerRepository customerRepository,
                                         CarRepository carRepository,
                                         OrderRepository orderRepository) {
-
         return args -> {
 
-            ////------- Create several Customer mock data -------////
+            //---------- Create several Customer mock data ----------//
             Customer customer1 = new Customer(
                     "12345", LocalDate.of(1970, Month.JULY, 7),
                     "dodu@gmail.com", "Donald", "Duck", "First street 1 Stockholm", null);
@@ -38,9 +39,8 @@ public class MockData {
                     "34567", LocalDate.of(1990, Month.SEPTEMBER, 9),
                     "mimo2@gmail.com", "Minnie", "Mouse", "Second street 10 Stockholm", null);
 
-            // Initial method for not adding already existing Customers (when ddl=update)
+            // Make sure already existing Customers are not added again (when ddl=update)
             ArrayList<Customer> mockCustomerList = new ArrayList<Customer>();
-
 
             Optional<Customer> tempCust1 = customerRepository.findByEmail("dodu@gmail.com");
             if (tempCust1.isEmpty()) {
@@ -60,16 +60,15 @@ public class MockData {
             } else {
                 System.out.println(customer3.getEmail() + " already exists");
             }
-            // Save Customer mock data (in case not already exists)
+            // Save Customer mock data
             customerRepository.saveAll(mockCustomerList);
 
-            ////------- Create several Car mock data -------////
-            // name() for converting enum CarType to string
+            //----------- Create several Car mock data -----------//
             Car car1 = new Car("abc123", "bmw", "sedan", 2020, 400, null);
             Car car2 = new Car("bcd234", "audi", "mini", 2021, 300, null);
             Car car3 = new Car("cde345", "volvo", "suv", 2022, 500, null);
 
-            // Initial method for not adding already existing Cars (when ddl=update)
+            // Make sure already existing Cars are not added again (when ddl=update)
             ArrayList<Car> mockCarList = new ArrayList<Car>();
 
             Optional<Car> tempCar1 = carRepository.findByRegNr("abc123");
@@ -94,7 +93,7 @@ public class MockData {
             // Save Car mock data
             carRepository.saveAll(mockCarList);
 
-            ////------- Create several Order mock data -------////
+            //---------- Create several Order mock data -----------//
             Order order1 = new Order(
                     "1001",
                     LocalDateTime.now().minusDays(5),
@@ -103,7 +102,7 @@ public class MockData {
                     customer1.getId(),
                     car2.getId(),
                     0, 0, 0
-                    // Price, numOfDays, priceInEuro is 0 here; then use setters to set them
+                    // Price, numOfDays, priceInEuro is 0 here; later use setters to set them
             );
             Order order2 = new Order(
                     "1002",
@@ -124,11 +123,10 @@ public class MockData {
                     0, 0, 0
             );
 
-            // Initial method for not adding already existing Orders (when ddl=update)
+            // Make sure already existing Orders are not added again (when ddl=update)
             Optional<Order> tempOrder1 = orderRepository.findByOrderNr("1001");
             if (tempOrder1.isEmpty()) {
                 order1.setNumberOfDays((int) DAYS.between(order1.getFirstRentalDay(), order1.getLastRentalDay()) + 1);
-//                   order1.setPrice(order1.getNumberOfDays() * carRepository.findById(order1.getCarId()).get().getDailySek());
                 order1.setPrice(order1.getNumberOfDays() * carRepository.findById(order1.getCarId()).orElse(null).getDailySek());
                 orderRepository.save(order1); // Instead of using list for saveAll
             } else {
@@ -154,8 +152,7 @@ public class MockData {
             }
 
 
-            ////-------- Add saved Orders to pertinent Cars -------////
-
+            //------------ Add saved mock Orders to pertinent Cars ----------.//
             Optional<Car> tempCar2a = carRepository.findByRegNr("bcd234");
             if (tempCar2a.isPresent()) {
                 // In one order
@@ -174,7 +171,6 @@ public class MockData {
             } else {
                 System.out.println("Not applicable");
             }
-
         };
     }
 }

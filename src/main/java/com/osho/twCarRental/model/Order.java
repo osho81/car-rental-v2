@@ -5,12 +5,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "orders") // "order" is reserved by sql
+@Table(name = "orders") // "order" singular is reserved by sql
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "orderid")
+    @Column(name = "order_id")
     private int id;
 
     @Column(name = "order_nr")
@@ -39,9 +39,11 @@ public class Order {
     @Column(name = "price_in_eur")
     private double priceInEuro;
 
+    // Empty constructor
     public Order() {
     }
 
+    // Constructor without ID
     public Order(String orderNr, LocalDateTime orderOrUpdateTime, LocalDate firstRentalDay, LocalDate lastRentalDay,
                  int customerId, int carId, double price, int numberOfDays, double priceInEuro) {
         this.orderNr = orderNr;
