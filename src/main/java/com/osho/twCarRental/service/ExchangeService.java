@@ -33,7 +33,7 @@ public class ExchangeService implements ExchangeServiceRepository {
         // Use app-name for microservice via gateway, instead of localhost/port; pass amount as url-var
         Exchange exchange = restTemplate.getForObject("http://EXCHANGE-SERVICE/change/" + amount, Exchange.class);
 
-        // Optionally update price in euro in the order and save, for later reference
+        // Optionally update & save price in euro in the order, for later reference
         actualOrder.setPriceInEuro(exchange.getAmountInEur());
         orderRepository.save(actualOrder);
 

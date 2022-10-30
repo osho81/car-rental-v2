@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface CarRepository extends JpaRepository<Car, Integer> {
 
-    // Customized methods
+    // Customized method
     Optional<Car> findByRegNr(String regNr);
 
 }
