@@ -80,6 +80,7 @@ public class OrderService implements OrderServiceRepository {
             // and eventual temp-fields: order/update date, price, numOfDays
             return orderRepository.save(new Order(
                     order.getOrderNr(),
+                    false,
                     tempDateTime,
                     order.getFirstRentalDay(),
                     order.getLastRentalDay(),
@@ -137,6 +138,7 @@ public class OrderService implements OrderServiceRepository {
             throw new RuntimeException("Please enter car id of ordered car.");
         }
 
+        orderToUpdate.setCanceled(order.isCanceled() == true ? orderToUpdate.isCanceled() : order.isCanceled()); // Use cancelOrder to cancel
         orderToUpdate.setFirstRentalDay(order.getFirstRentalDay() == null ? orderToUpdate.getFirstRentalDay() : order.getFirstRentalDay());
         orderToUpdate.setLastRentalDay(order.getLastRentalDay() == null ? orderToUpdate.getLastRentalDay() : order.getLastRentalDay());
         orderToUpdate.setCustomerId(order.getCustomerId() == 0 ? orderToUpdate.getCustomerId() : order.getCustomerId());
@@ -149,36 +151,38 @@ public class OrderService implements OrderServiceRepository {
     }
 
     @Override
-    public void cancelOrder(Order order) {
+    public Order cancelOrder(Order order) {
 
         // Get order to update with id if exists, else get with order nr if that exists
         Optional<Order> foundById = orderRepository.findById(order.getId());
         Optional<Order> foundByOrderNr = orderRepository.findByOrderNr(order.getOrderNr());
+
         if (foundById.isEmpty() && foundByOrderNr.isEmpty()) {
             throw new RuntimeException("Order with id " + order.getId()
                     + " or order nr " + order.getOrderNr() + " not found");
         }
 
         // Then, if either id or order nr exists, get order by one of them
-        Order orderToDelete = foundById.isPresent() ? orderRepository.findById(order.getId()).get() :
+        Order orderToCancel = foundById.isPresent() ? orderRepository.findById(order.getId()).get() :
                 orderRepository.findByOrderNr(order.getOrderNr()).get();
 
-        // Save a "cancelled copy" of the deleted order; add "cancelled" to order nr field
-        // Use available method in this service class
-        orderCar(new Order(
-                "CANCELLED" + orderToDelete.getOrderNr(),
-                LocalDateTime.now(),
-                orderToDelete.getFirstRentalDay(),
-                orderToDelete.getLastRentalDay(),
-                orderToDelete.getCustomerId(),
-                orderToDelete.getCarId(),
-                orderToDelete.getPrice(),
-                orderToDelete.getNumberOfDays(),
-                orderToDelete.getPriceInEuro()
-        ));
+        // Update order with "cancelled" added to order nr field
 
-        // Delete original order
-        orderRepository.delete(orderToDelete);
+        orderToCancel.setOrderNr("CANCELLED" + orderToCancel.getOrderNr()); // Update
+        orderToCancel.setCanceled(order.isCanceled()); // Update
+        orderToCancel.setOrderOrUpdateTime(LocalDateTime.now()); // Update
+
+        // Keep old values, in case new values are passed in through postman etc
+        orderToCancel.setFirstRentalDay(orderToCancel.getFirstRentalDay());
+        orderToCancel.setLastRentalDay(orderToCancel.getLastRentalDay());
+        orderToCancel.setCustomerId(orderToCancel.getCustomerId());
+        orderToCancel.setCarId(orderToCancel.getCarId());
+        orderToCancel.setPrice(orderToCancel.getPrice());
+        orderToCancel.setNumberOfDays(orderToCancel.getNumberOfDays());
+        orderToCancel.setPriceInEuro(orderToCancel.getPriceInEuro());
+
+        // Save updated order as a cancelled version
+        return orderRepository.save(orderToCancel);
     }
 
 }

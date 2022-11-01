@@ -9,6 +9,6 @@ public interface OrderServiceRepository {
     List<Order> getMyOrders(Customer customer);
     Order orderCar(Order order);
     Order updateOrder(Order order);
-    void cancelOrder(Order order);
+    Order cancelOrder(Order order);
 
 }

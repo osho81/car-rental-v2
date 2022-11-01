@@ -36,12 +36,8 @@ public class OrderController {
     }
 
     // Requirement: "Avboka order PUT /api/v1/cancelorder"
-    @DeleteMapping("/cancelorder") // ADMIN ROLE REQUIRED
-    public ResponseEntity<String> cancelOrder(@RequestBody Order order) {
-        orderService.cancelOrder(order);
-        return new ResponseEntity<String>("Order with " +
-                (order.getId() == 0 ? "order nr " : "id " + order.getId() + " and/or order nr ") +
-                order.getOrderNr() + " cancelled.", HttpStatus.OK);
+    @PutMapping("/cancelorder") // ADMIN ROLE REQUIRED
+    public ResponseEntity<Order> cancelOrder(@RequestBody Order order) {
+        return new ResponseEntity<Order>(orderService.cancelOrder(order), HttpStatus.OK);
     }
-
 }

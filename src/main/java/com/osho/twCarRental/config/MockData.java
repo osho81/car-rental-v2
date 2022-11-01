@@ -96,6 +96,7 @@ public class MockData {
             //---------- Create several Order mock data -----------//
             Order order1 = new Order(
                     "1001",
+                    false,
                     LocalDateTime.now().minusDays(5),
                     LocalDate.of(2022, Month.DECEMBER, 15),
                     LocalDate.of(2022, Month.DECEMBER, 19),
@@ -106,6 +107,7 @@ public class MockData {
             );
             Order order2 = new Order(
                     "1002",
+                    false,
                     LocalDateTime.now().minusDays(15),
                     LocalDate.of(2023, Month.JANUARY, 2),
                     LocalDate.of(2023, Month.JANUARY, 8),
@@ -115,6 +117,7 @@ public class MockData {
             );
             Order order3 = new Order(
                     "1003",
+                    false,
                     LocalDateTime.now().minusDays(20),
                     LocalDate.of(2023, Month.JANUARY, 10),
                     LocalDate.of(2023, Month.JANUARY, 10),

@@ -16,6 +16,9 @@ public class Order {
     @Column(name = "order_nr")
     private String orderNr;
 
+    @Column(name = "canceled")
+    private boolean canceled;
+
     @Column(name = "order_date")
     private LocalDateTime orderOrUpdateTime;
 
@@ -44,9 +47,10 @@ public class Order {
     }
 
     // Constructor without ID
-    public Order(String orderNr, LocalDateTime orderOrUpdateTime, LocalDate firstRentalDay, LocalDate lastRentalDay,
+    public Order(String orderNr, boolean canceled, LocalDateTime orderOrUpdateTime, LocalDate firstRentalDay, LocalDate lastRentalDay,
                  int customerId, int carId, double price, int numberOfDays, double priceInEuro) {
         this.orderNr = orderNr;
+        this.canceled = canceled; // Alternatively set it to false here in the constructor
         this.orderOrUpdateTime = orderOrUpdateTime.withNano(0); // Remove nano seconds
         this.firstRentalDay = firstRentalDay;
         this.lastRentalDay = lastRentalDay;
@@ -135,5 +139,13 @@ public class Order {
 
     public void setPriceInEuro(double priceInEuro) {
         this.priceInEuro = priceInEuro;
+    }
+
+    public boolean isCanceled() {
+        return canceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
     }
 }
