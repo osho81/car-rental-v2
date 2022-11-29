@@ -6,9 +6,10 @@ With persistent database storage, security implementation.
 
 ##### It is the main app of a wider car rental service project, which consists of:
 - This app that makes up the logic of the rental system
-- Microservice api-gateway
-- Microservice for rate exchange 
-- Server registry for the already available and eventual more future microservices
+- Microservice [api-gateway](https://github.com/osho81/car-rental-api-gateway)
+- Microservice for [rate exchange](https://github.com/osho81/car-rental-exchange-service)
+- Server [registry](https://github.com/osho81/car-rental-service-registry) for the already available and eventual more future microservices
+
 
 ### Functions etc
 - Login with Keycloak security server
@@ -16,11 +17,10 @@ With persistent database storage, security implementation.
 - Exchange price from SEK to EUR
 
 ### Techs & languages used
-- Java
-- Spring, Springboot
-- JPA, Hibernate
-- MySQL, MySql-Workbench
-- Keycloak 
+- Java, Spring, Springboot, - Rest-api
+- JPA, MySQL, MySql-Workbench
+- Keycloak & spring security
+- HTTP request to external api
 
 ### Purpose/Motivation
 To test and improve skills in Springboot, security implementation, and microservice architecture.
