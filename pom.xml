@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.osho</groupId>
-    <artifactId>car-rental</artifactId>
+    <artifactId>car-rental-v2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>car-rental</name>
+    <name>car-rental-v2</name>
     <description>School project java spring rest-api security</description>
     <properties>
         <java.version>11</java.version>
