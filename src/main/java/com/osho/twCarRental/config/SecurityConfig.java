@@ -61,9 +61,15 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/updatecar").hasRole("admin")
                 .antMatchers("/api/v1/cancelorder").hasRole("admin")
 
+                .antMatchers("/h2-console/**").permitAll() // For H2-console web view
+
                 .anyRequest().authenticated();
         http.csrf().disable();
+
+        http.headers().frameOptions().disable(); // For H2-console web view
+
     }
+
 
 
 }
