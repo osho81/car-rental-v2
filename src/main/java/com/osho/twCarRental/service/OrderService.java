@@ -49,7 +49,7 @@ public class OrderService implements OrderServiceRepository {
     public Order orderCar(Order order) {
 
         Optional<Order> foundOrder = orderRepository.findByOrderNr(order.getOrderNr());
-
+        // Alternatively: setOrderNr(orderRepository.findAll() + 1000) or something similar
         if (foundOrder.isPresent()) {
             throw new RuntimeException("Order nr " + order.getOrderNr() + " already exists.");
         } else {
@@ -128,11 +128,11 @@ public class OrderService implements OrderServiceRepository {
         // Calculate numOfDays and check carId
         int tempNumOfDays = (order.getFirstRentalDay() != null && order.getLastRentalDay() != null) ?
                 ((int) DAYS.between(order.getFirstRentalDay(), order.getLastRentalDay()) + 1) : 1;
-        int tempCarId = order.getCarId() == 0 ? orderToUpdate.getCarId() : order.getCarId();
 
+        int tempCarId = order.getCarId() == 0 ? orderToUpdate.getCarId() : order.getCarId();
         // Calculate price, by getting number of days & price, if dates are not missing in body
         double tempPrice;
-        if (carRepository.findById(tempCarId).isPresent()) {
+        if (carRepository.findById(tempCarId).isPresent()) { // Car must exist
             tempPrice = tempNumOfDays * carRepository.findById(tempCarId).orElse(null).getDailySek();
         } else {
             throw new RuntimeException("Please enter car id of ordered car.");
@@ -168,8 +168,8 @@ public class OrderService implements OrderServiceRepository {
 
         // Update order with "cancelled" added to order nr field
 
-        orderToCancel.setOrderNr("CANCELLED" + orderToCancel.getOrderNr()); // Update
-        orderToCancel.setCanceled(order.isCanceled()); // Update
+//        orderToCancel.setOrderNr("CANCELED" + orderToCancel.getOrderNr()); // Deleted 221222
+        orderToCancel.setCanceled(true); // Update
         orderToCancel.setOrderOrUpdateTime(LocalDateTime.now()); // Update
 
         // Keep old values, in case new values are passed in through postman etc

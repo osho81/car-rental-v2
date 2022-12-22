@@ -19,7 +19,7 @@ public class Order {
     @Column(name = "canceled")
     private boolean canceled;
 
-    @Column(name = "order_date")
+    @Column(name = "order_date", nullable = true)
     private LocalDateTime orderOrUpdateTime;
 
     @Column(name = "first_rental_day")

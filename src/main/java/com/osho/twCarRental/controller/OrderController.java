@@ -18,7 +18,9 @@ public class OrderController {
     private OrderService orderService;
 
     // Requirement: "Se tidigare och aktiva bokningar GET /api/v1/myorders"
-    @GetMapping("/myorders") // USER ROLE REQUIRED
+//    @GetMapping("/myorders") // USER ROLE REQUIRED
+    // Change 221221 to accept both Get & Post, since frontend js fetch used´s post with req-body
+    @RequestMapping(value = "/myorders", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<List<Order>> getMyOrders(@RequestBody Customer customer) {
         return new ResponseEntity<List<Order>>(orderService.getMyOrders(customer), HttpStatus.OK);
     }
