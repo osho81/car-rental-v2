@@ -138,7 +138,9 @@ public class OrderService implements OrderServiceRepository {
             throw new RuntimeException("Please enter car id of ordered car.");
         }
 
-        orderToUpdate.setCanceled(order.isCanceled() == true ? orderToUpdate.isCanceled() : order.isCanceled()); // Use cancelOrder to cancel
+//        orderToUpdate.setCanceled(order.isCanceled() == true ? orderToUpdate.isCanceled() : order.isCanceled()); // Use cancelOrder to cancel
+        orderToUpdate.setCanceled(order.isCanceled()); // Allow UN-cancel; added 221223
+
         orderToUpdate.setFirstRentalDay(order.getFirstRentalDay() == null ? orderToUpdate.getFirstRentalDay() : order.getFirstRentalDay());
         orderToUpdate.setLastRentalDay(order.getLastRentalDay() == null ? orderToUpdate.getLastRentalDay() : order.getLastRentalDay());
         orderToUpdate.setCustomerId(order.getCustomerId() == 0 ? orderToUpdate.getCustomerId() : order.getCustomerId());
@@ -169,7 +171,14 @@ public class OrderService implements OrderServiceRepository {
         // Update order with "cancelled" added to order nr field
 
 //        orderToCancel.setOrderNr("CANCELED" + orderToCancel.getOrderNr()); // Deleted 221222
-        orderToCancel.setCanceled(true); // Update
+        if (orderToCancel.isCanceled() == true) { // Added 221223
+            throw new RuntimeException("Order with id " + order.getId()
+//                    + " or order nr " + order.getOrderNr() + " is already cancelled");
+                    + " is already cancelled");
+        } else {
+            orderToCancel.setCanceled(true);
+        }
+
         orderToCancel.setOrderOrUpdateTime(LocalDateTime.now()); // Update
 
         // Keep old values, in case new values are passed in through postman etc
