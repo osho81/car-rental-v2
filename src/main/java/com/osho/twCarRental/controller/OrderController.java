@@ -22,6 +22,7 @@ public class OrderController {
     // Change 221221 to accept both Get & Post, since frontend js fetch used´s post with req-body
     @RequestMapping(value = "/myorders", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<List<Order>> getMyOrders(@RequestBody Customer customer) {
+        System.out.println("I am in controller myorder");
         return new ResponseEntity<List<Order>>(orderService.getMyOrders(customer), HttpStatus.OK);
     }
 

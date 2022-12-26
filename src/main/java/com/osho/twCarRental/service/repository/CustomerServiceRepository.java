@@ -11,6 +11,7 @@ public interface CustomerServiceRepository {
 
 
     //-- NOT PROJECT REQUIREMENTS --//
+    int getCustomerIdByEmail(String Email); // Added 221226
     Customer addCustomer(Customer customer);
     void deleteCustomer(Customer customer);
 }

@@ -27,6 +27,11 @@ public class CustomerController {
 
     //---------------------- NOT PROJECT REQUIREMENTS -----------------------//
 
+    @GetMapping("/customerid/{email}") // Added 221226
+    public ResponseEntity<Integer> getCustomerIdByEmail(@PathVariable("email") String email) {
+        return new ResponseEntity<Integer>(customerService.getCustomerIdByEmail(email), HttpStatus.OK);
+    }
+
     @PostMapping("/addcustomer")
     public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
         return new ResponseEntity<Customer>(customerService.addCustomer(customer), HttpStatus.CREATED);

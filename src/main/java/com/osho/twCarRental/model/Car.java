@@ -8,6 +8,16 @@ import java.util.List;
 @Table(name = "cars")
 public class Car {
 
+    // Changed type from string to type 221224
+    public enum Type {
+        SEDAN, // 0; use index for postman, frontend, data.sql etc
+        MINI, // 1
+        SUV, // 2
+        CAB, // 3
+        SPORT, // 4
+        BUS // 5
+    };
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_id")
@@ -20,7 +30,7 @@ public class Car {
     private String model; // BMW, Audi etc.
 
     @Column(name = "type")
-    private String type;
+    private Type type;
 
     @Column(name = "model_year")
     private int modelYear;
@@ -30,6 +40,7 @@ public class Car {
 
     // A car can be in many orders, and vice versa
     // (Refers to variable name carId in Order class, not column name)
+    @Column(name = "orders_of_car")
     @OneToMany(mappedBy = "carId", cascade = CascadeType.PERSIST)
     private List<Order> ordersOfCar = new ArrayList<>();
 
@@ -38,7 +49,7 @@ public class Car {
     }
 
     // Constructor without ID
-    public Car(String regNr, String model, String type, int modelYear, double dailySek, List<Order> ordersOfCar) {
+    public Car(String regNr, String model, Type type, int modelYear, double dailySek, List<Order> ordersOfCar) {
         this.regNr = regNr;
         this.model = model;
         this.type = type;
@@ -71,11 +82,11 @@ public class Car {
         this.model = model;
     }
 
-    public String getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Type type) {
         this.type = type;
     }
 

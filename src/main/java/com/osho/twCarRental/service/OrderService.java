@@ -76,6 +76,9 @@ public class OrderService implements OrderServiceRepository {
                 tempPrice = order.getPrice();
             }
 
+            // Get customer id by email - added 221226
+            int customerIdFoundByEmail = customerRepository.findById(order.getCustomerId()).orElse(null).getId();
+
             // Use "compulsory fields" from req-body: orderNr, first/last rent day, customerId, carId
             // and eventual temp-fields: order/update date, price, numOfDays
             return orderRepository.save(new Order(
@@ -84,7 +87,8 @@ public class OrderService implements OrderServiceRepository {
                     tempDateTime,
                     order.getFirstRentalDay(),
                     order.getLastRentalDay(),
-                    order.getCustomerId(),
+//                    order.getCustomerId(),
+                    customerIdFoundByEmail, // Frontend js email from keycloak user 221226
                     order.getCarId(),
                     tempPrice,
                     tempNumOfDays,

@@ -26,6 +26,17 @@ public class CustomerService implements CustomerServiceRepository {
 
 
     //---------------------- NOT PROJECT REQUIREMENTS -----------------------//
+    public int getCustomerIdByEmail(String email) { // Added 221226
+        Optional<Customer> foundByEmail = customerRepository.findByEmail(email);
+        if (!foundByEmail.isPresent()) { // Check if regNr is occupied
+            throw new RuntimeException(email + " not found");
+        } else {
+            System.out.println("Customer id for email " + email + " is returned.");
+            Customer foundCustomer = customerRepository.findByEmail(email).get();
+            return foundCustomer.getId();
+        }
+    }
+
 
     @Override
     public Customer addCustomer(Customer customer) {
@@ -54,4 +65,5 @@ public class CustomerService implements CustomerServiceRepository {
 
         customerRepository.delete(customerToUpdate);
     }
+
 }
