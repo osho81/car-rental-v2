@@ -1,5 +1,6 @@
 package com.osho.twCarRental.service;
 
+import com.osho.twCarRental.model.Car;
 import com.osho.twCarRental.model.Customer;
 import com.osho.twCarRental.model.Order;
 import com.osho.twCarRental.repository.CarRepository;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.Integer.parseInt;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
@@ -82,7 +84,8 @@ public class OrderService implements OrderServiceRepository {
             // Use "compulsory fields" from req-body: orderNr, first/last rent day, customerId, carId
             // and eventual temp-fields: order/update date, price, numOfDays
             return orderRepository.save(new Order(
-                    order.getOrderNr(),
+                    // OrderNr = current number of orders + 1001
+                    "" + (orderRepository.findAll().size() + 1001),
                     false,
                     tempDateTime,
                     order.getFirstRentalDay(),
@@ -196,6 +199,12 @@ public class OrderService implements OrderServiceRepository {
 
         // Save updated order as a cancelled version
         return orderRepository.save(orderToCancel);
+    }
+
+    // Added 221226 to adjust for frontend needs
+    @Override
+    public List<Car> getAllOrders() {
+        return carRepository.findAll();
     }
 
 }

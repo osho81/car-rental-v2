@@ -96,18 +96,19 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**").permitAll()
 
                 // User permitted endpoints
-                .antMatchers("/api/v1/cars").hasRole("user")
+                // (Get list of cars is needed for admin, according to frontend requirements)
+                .antMatchers("/api/v1/cars").hasAnyRole("user", "admin")
                 .antMatchers("/api/v1/ordercar").hasRole("user")
                 .antMatchers("/api/v1/updateorder").hasRole("user")
                 .antMatchers("/api/v1/myorders").hasRole("user")
-                .antMatchers("/api/v1/exchange").hasRole("user");
+                .antMatchers("/api/v1/exchange").hasRole("user")
 
                 // Admin permitted endpoints
-//                .antMatchers("/api/v1/customers").hasRole("admin")
-//                .antMatchers("/api/v1/addcar").hasRole("admin");
-//                .antMatchers("/api/v1/deletecar").hasRole("admin")
-//                .antMatchers("/api/v1/updatecar").hasRole("admin")
-//                .antMatchers("/api/v1/cancelorder").hasRole("admin")
+                .antMatchers("/api/v1/customers").hasRole("admin")
+                .antMatchers("/api/v1/addcar").hasRole("admin")
+                .antMatchers("/api/v1/deletecar").hasRole("admin")
+                .antMatchers("/api/v1/updatecar").hasRole("admin")
+                .antMatchers("/api/v1/cancelorder").hasRole("admin");
 
 
         System.out.println("I am after antmatcher");

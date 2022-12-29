@@ -1,5 +1,6 @@
 package com.osho.twCarRental.controller;
 
+import com.osho.twCarRental.model.Car;
 import com.osho.twCarRental.model.Customer;
 import com.osho.twCarRental.model.Order;
 import com.osho.twCarRental.service.OrderService;
@@ -22,7 +23,6 @@ public class OrderController {
     // Change 221221 to accept both Get & Post, since frontend js fetch used´s post with req-body
     @RequestMapping(value = "/myorders", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<List<Order>> getMyOrders(@RequestBody Customer customer) {
-        System.out.println("I am in controller myorder");
         return new ResponseEntity<List<Order>>(orderService.getMyOrders(customer), HttpStatus.OK);
     }
 
@@ -43,4 +43,11 @@ public class OrderController {
     public ResponseEntity<Order> cancelOrder(@RequestBody Order order) {
         return new ResponseEntity<Order>(orderService.cancelOrder(order), HttpStatus.OK);
     }
+
+    // Added 221226 to adjust for frontend needs
+    @GetMapping("/orders") // USER ROLE REQUIRED
+    public ResponseEntity<List<Car>> getAllCars() {
+        return new ResponseEntity<List<Car>>(orderService.getAllOrders(), HttpStatus.OK);
+    }
+
 }

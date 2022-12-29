@@ -1,5 +1,7 @@
 package com.osho.twCarRental.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +108,7 @@ public class Car {
         this.dailySek = dailySek;
     }
 
+//    @JsonManagedReference // Solves the infinite recursion problem
     public List<Order> getOrdersOfCar() {
         return ordersOfCar;
     }

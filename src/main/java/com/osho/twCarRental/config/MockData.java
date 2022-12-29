@@ -30,13 +30,13 @@ public class MockData {
 
             //---------- Create several Customer mock data ----------//
             Customer customer1 = new Customer(
-                    "12345", LocalDate.of(1970, Month.JULY, 7),
+                    "123456789", LocalDate.of(1970, Month.JULY, 7),
                     "dodu@gmail.com", "Donald", "Duck", "First street 1 Stockholm", null);
             Customer customer2 = new Customer(
-                    "23456", LocalDate.of(1980, Month.AUGUST, 8),
+                    "234567890", LocalDate.of(1980, Month.AUGUST, 8),
                     "mimo1@gmail.com", "Mickey", "Mouse", "Second street 10 Stockholm", null);
             Customer customer3 = new Customer(
-                    "34567", LocalDate.of(1990, Month.SEPTEMBER, 9),
+                    "345678901", LocalDate.of(1990, Month.SEPTEMBER, 9),
                     "mimo2@gmail.com", "Minnie", "Mouse", "Second street 10 Stockholm", null);
 
             // Make sure already existing Customers are not added again (when ddl=update)

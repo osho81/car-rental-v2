@@ -1,5 +1,7 @@
 package com.osho.twCarRental.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -109,6 +111,7 @@ public class Order {
         this.customerId = customerId;
     }
 
+//    @JsonBackReference // Solves the infinite recursion problem
     public int getCarId() {
         return carId;
     }
