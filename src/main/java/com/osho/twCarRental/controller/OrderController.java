@@ -46,8 +46,8 @@ public class OrderController {
 
     // Added 221226 to adjust for frontend needs
     @GetMapping("/orders") // USER ROLE REQUIRED
-    public ResponseEntity<List<Car>> getAllCars() {
-        return new ResponseEntity<List<Car>>(orderService.getAllOrders(), HttpStatus.OK);
+    public ResponseEntity<List<Order>> getAllCars() {
+        return new ResponseEntity<List<Order>>(orderService.getAllOrders(), HttpStatus.OK);
     }
 
 }

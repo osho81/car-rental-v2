@@ -119,8 +119,8 @@ public class MockData {
                     "1003",
                     false,
                     LocalDateTime.now().minusDays(7), // Simulating real booking time
-                    LocalDate.of(2023, Month.JANUARY, 10),
-                    LocalDate.of(2023, Month.JANUARY, 10),
+                    LocalDate.of(2022, Month.DECEMBER, 10),
+                    LocalDate.of(2022, Month.DECEMBER, 11),
                     customer1.getId(),
                     car1.getId(),
                     0, 0, 0

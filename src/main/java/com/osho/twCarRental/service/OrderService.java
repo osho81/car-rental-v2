@@ -120,6 +120,8 @@ public class OrderService implements OrderServiceRepository {
         // Make sure not to update into orderNr that already exists
         if (foundByOrderNr.isPresent()) {
             orderToUpdate.setOrderNr(orderToUpdate.getOrderNr());
+        } else if (order.getOrderNr() == null) { // Added 20221230
+            orderToUpdate.setOrderNr(orderToUpdate.getOrderNr());
         } else {
             orderToUpdate.setOrderNr(order.getOrderNr());
         }
@@ -188,6 +190,8 @@ public class OrderService implements OrderServiceRepository {
 
         orderToCancel.setOrderOrUpdateTime(LocalDateTime.now()); // Update
 
+        orderToCancel.setOrderNr(orderToCancel.getOrderNr()); // Added 221230 to keep orderNr
+
         // Keep old values, in case new values are passed in through postman etc
         orderToCancel.setFirstRentalDay(orderToCancel.getFirstRentalDay());
         orderToCancel.setLastRentalDay(orderToCancel.getLastRentalDay());
@@ -203,8 +207,8 @@ public class OrderService implements OrderServiceRepository {
 
     // Added 221226 to adjust for frontend needs
     @Override
-    public List<Car> getAllOrders() {
-        return carRepository.findAll();
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
     }
 
 }

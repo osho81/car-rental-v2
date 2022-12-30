@@ -12,6 +12,6 @@ public interface OrderServiceRepository {
     Order updateOrder(Order order);
     Order cancelOrder(Order order);
 
-    // Added 221229 to adjust for frontend needs
-    List<Car> getAllOrders();
+    // Added 221229 to adjust for frontend requirements
+    List<Order> getAllOrders();
 }
