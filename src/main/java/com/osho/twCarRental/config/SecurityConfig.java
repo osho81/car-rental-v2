@@ -107,7 +107,10 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/addcar").hasRole("admin")
                 .antMatchers("/api/v1/deletecar").hasRole("admin")
                 .antMatchers("/api/v1/updatecar").hasRole("admin")
-                .antMatchers("/api/v1/cancelorder").hasRole("admin");
+                .antMatchers("/api/v1/cancelorder").hasRole("admin")
+
+                // Added to retrieve orders to assist other functions
+                .antMatchers("/api/v1/orders").hasAnyRole("admin", "user");
 
 
         http.csrf().disable();

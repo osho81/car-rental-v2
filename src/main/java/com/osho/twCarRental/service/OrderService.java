@@ -134,19 +134,23 @@ public class OrderService implements OrderServiceRepository {
         }
         orderToUpdate.setOrderOrUpdateTime(tempDateTime);
 
-        // Calculate numOfDays and check carId
+        // Calculate numOfDays and check carId // Updated 221231 to always give correct price
         int tempNumOfDays = (order.getFirstRentalDay() != null && order.getLastRentalDay() != null) ?
-                ((int) DAYS.between(order.getFirstRentalDay(), order.getLastRentalDay()) + 1) : 1;
+                ((int) DAYS.between(orderToUpdate.getFirstRentalDay(), orderToUpdate.getLastRentalDay()) + 1) : 1;
 
         int tempCarId = order.getCarId() == 0 ? orderToUpdate.getCarId() : order.getCarId();
         // Calculate price, by getting number of days & price, if dates are not missing in body
         double tempPrice;
+
         if (carRepository.findById(tempCarId).isPresent()) { // Car must exist
             tempPrice = tempNumOfDays * carRepository.findById(tempCarId).orElse(null).getDailySek();
         } else {
             throw new RuntimeException("Please enter car id of ordered car.");
         }
 
+        System.out.println(tempCarId);
+        System.out.println(tempPrice);
+        System.out.println(tempNumOfDays);
 //        orderToUpdate.setCanceled(order.isCanceled() == true ? orderToUpdate.isCanceled() : order.isCanceled()); // Use cancelOrder to cancel
         orderToUpdate.setCanceled(order.isCanceled()); // Allow UN-cancel; added 221223
 
