@@ -148,9 +148,6 @@ public class OrderService implements OrderServiceRepository {
             throw new RuntimeException("Please enter car id of ordered car.");
         }
 
-        System.out.println(tempCarId);
-        System.out.println(tempPrice);
-        System.out.println(tempNumOfDays);
 //        orderToUpdate.setCanceled(order.isCanceled() == true ? orderToUpdate.isCanceled() : order.isCanceled()); // Use cancelOrder to cancel
         orderToUpdate.setCanceled(order.isCanceled()); // Allow UN-cancel; added 221223
 

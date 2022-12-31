@@ -27,37 +27,10 @@ public class ExchangeService implements ExchangeServiceRepository {
     @Autowired
     private RestTemplate restTemplate;
 
-    // THIS METHOD IS WHEN USING MICROSERVICE
-    // (I.E. USED WITH CAR-RENTAL-V1)
-//    @Override
-//    public ResponseTemplateVO getExchangeService(int orderId) {
-//        System.out.println("I am in TW main project exchange service method"); // Control print
-//
-//        ResponseTemplateVO vo = new ResponseTemplateVO(); // Enabling full/combined response
-//
-//        Order actualOrder = orderRepository.findById(orderId).get();
-//
-//        double amount = actualOrder.getPrice(); // Extract amount from found order obj
-//
-//        // Use app-name for microservice via gateway, instead of localhost/port; pass amount as url-var
-//        Exchange exchange = restTemplate.getForObject("http://EXCHANGE-SERVICE/change/" + amount, Exchange.class);
-//
-//        // Optionally update & save price in euro in the order, for later reference
-//        actualOrder.setPriceInEuro(exchange.getAmountInEur());
-//        orderRepository.save(actualOrder);
-//
-//        vo.setOrder(actualOrder); // Add the order to full response
-//        vo.setExchange(exchange); // Add the exchange details to full response
-//
-//        return vo;
-//    }
-
-
     // THIS METHOD IS USED WHEN SKIPPING MICROSERVICE
     // (FOR MICROSERVICE APPROACH SEE CAR-RENTAL-V1)
     @Override
     public ResponseTemplateVO getExchangeWithoutMicroservice(int orderId) throws JSONException, IOException { // Exceptions added 221224
-        System.out.println("I am in TW main project exchange service method without microservice"); // Control print
 
         ResponseTemplateVO vo = new ResponseTemplateVO(); // Enabling full/combined response
         Order actualOrder = orderRepository.findById(orderId).get();
@@ -90,8 +63,6 @@ public class ExchangeService implements ExchangeServiceRepository {
     public static final String ENDPOINT = "convert";
 
     public Exchange getExchangeInfo(double amount) throws IOException, JSONException {
-        System.out.println("I am in exchange-service Service class method"); // Control print
-
         String toCurrency = "EUR";
         String fromCurrency = "SEK";
 
