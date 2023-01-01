@@ -134,10 +134,17 @@ public class OrderService implements OrderServiceRepository {
         }
         orderToUpdate.setOrderOrUpdateTime(tempDateTime);
 
-        // Calculate numOfDays and check carId // Updated 221231 to always give correct price
+        // Calculate numOfDays // Updated 221231 to always give correct total price
         int tempNumOfDays = (order.getFirstRentalDay() != null && order.getLastRentalDay() != null) ?
-                ((int) DAYS.between(orderToUpdate.getFirstRentalDay(), orderToUpdate.getLastRentalDay()) + 1) : 1;
+                ((int) DAYS.between(order.getFirstRentalDay(), order.getLastRentalDay()) + 1) :
+                // If dates are missing. keep previous value make fix correct update
+                orderToUpdate.getNumberOfDays();
 
+        System.out.println(order.getNumberOfDays());
+        System.out.println(orderToUpdate.getNumberOfDays());
+        System.out.println(tempNumOfDays);
+
+        // Check car id for price
         int tempCarId = order.getCarId() == 0 ? orderToUpdate.getCarId() : order.getCarId();
         // Calculate price, by getting number of days & price, if dates are not missing in body
         double tempPrice;

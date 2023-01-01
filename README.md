@@ -44,7 +44,7 @@ and used in the fullstack project)
 - Keycloak & spring security
 - HTTP request to external api
 
-### Security related matters
+### Security related matters for the fullstack project
 
 For login and access management, [Keycloak (Quarkus distribution)](https://www.keycloak.org/downloads) is employed. For
 the frontend (customer-web & admin-web) a Javascript adapter from the same source have been included in the project. Brief
@@ -55,7 +55,7 @@ configuration description:
 - Valid post logout redirect URIs, relevant for e.g. VS Code live server:
     - http://localhost:9090/api/v1/*
     - http://127.0.0.1:5500/*
-    - http://127.0.0.1:5501/*
+    - http://127.0.0.1:5501/* (in case use customer & admin web simultanous)
     - During development * as uri and web origin uri is sufficient.
 - Roles: admin & user
 
