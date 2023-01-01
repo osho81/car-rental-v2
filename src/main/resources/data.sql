@@ -27,7 +27,7 @@ VALUES ('abb122', 'Mercedes', 2, 2018, 500),
        ('ijk987', 'Audi', 0, 2018, 350),
        ('jjj121', 'Mercedes', 4, 2022, 650);
 
--- OPrimarily, orders are logically created by commandLineRunner:
+-- Primarily, orders are logically created by commandLineRunner:
 INSERT INTO ORDERS (order_nr, canceled, order_date, first_rental_day, last_rental_day,
                     customer_id, car_id, price, num_of_days, price_in_eur)
 VALUES ('2001', false, '2022-11-11T12:00:00', '2023-01-14', '2023-01-16', 1, 2, 1200, 3, 0),

@@ -140,10 +140,6 @@ public class OrderService implements OrderServiceRepository {
                 // If dates are missing. keep previous value make fix correct update
                 orderToUpdate.getNumberOfDays();
 
-        System.out.println(order.getNumberOfDays());
-        System.out.println(orderToUpdate.getNumberOfDays());
-        System.out.println(tempNumOfDays);
-
         // Check car id for price
         int tempCarId = order.getCarId() == 0 ? orderToUpdate.getCarId() : order.getCarId();
         // Calculate price, by getting number of days & price, if dates are not missing in body
