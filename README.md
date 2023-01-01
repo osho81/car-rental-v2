@@ -11,7 +11,7 @@ etc. will be described hereafter.
 Note: car-rental-v1 is almost identical to this car-rental-v2, but the latter is with optional microservices only
 and used in the fullstack project)
 
-#### All pojects belonging to the FULLSTACK car rental project can be found here:
+#### All projects belonging to the FULLSTACK car rental project can be found here:
 
 - [car-rental-v2 (this backend rest api project)](https://gitlab.com/car-rental-fullstack/car-rental-v2)
 - [admin-web (frontend js project)](https://gitlab.com/car-rental-fullstack/admin-web)
@@ -33,9 +33,34 @@ and used in the fullstack project)
 
 ### Functions and api services
 
-- Login with Keycloak security server (via postman or other client)
+- Login with Keycloak security server (via postman, browser, or other client)
 - Api for storing, updating, deleting new customers, cars, orders
 - Api for exchange price from SEK to EUR
+
+### DB & Mockdata
+
+For this project H2 database is used. There are two approaches, one in memory only, and one with enabled H2 db
+connection in intelliJ as well. In both cases the MockData.java automatically creates few mockdata records to the
+database.
+
+#### H2 in memory only
+
+- Enable spring.datasource.url=jdbc:h2:mem:twrental in application.properties file
+- (Unconnect or ignore eventual intelliJ connected H2 db)
+- If there is need for more mockdata records, copy sql statements from the data.sql file and run in the H2 browser
+  console.
+
+#### H2 approach for H2 console & intelliJ db connect
+
+- Enable #spring.datasource.url=jdbc:h2:file:/data/twrental;AUTO_SERVER=TRUE in application.properties file
+- (Optionally connect H2 db to intelliJ)
+- If there is need for more mockdata records, execute the whole of part of the data.sql file. 
+  - No customized schemas are used. 
+  - If required, select TWRENTAL.PUBLIC as target data source/schema in data.sql run configurations. 
+  - Alternatively, copy sql statements from the data.sql file and run in the H2 browser console.
+
+To see H2 data in browser console (http://localhost:9090/h2-console), be sure to select the correct JDBC url to log in
+to the console (see url in spring.datasource.url in application.properties file).
 
 ### Techs & languages used
 
@@ -47,7 +72,8 @@ and used in the fullstack project)
 ### Security related matters for the fullstack project
 
 For login and access management, [Keycloak (Quarkus distribution)](https://www.keycloak.org/downloads) is employed. For
-the frontend (customer-web & admin-web) a Javascript adapter from the same source have been included in the project. Brief
+the frontend (customer-web & admin-web) a Javascript adapter from the same source have been included in the project.
+Brief
 configuration description:
 
 - Realm name: car-rental-realm
