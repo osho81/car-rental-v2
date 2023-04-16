@@ -2,14 +2,15 @@
 
 ### Intro on overall car rental project
 
-This car-rental-v2 is mainly a rest api project built on Java/SpringBoot.
+This car-rental-v2 is a rest api project built on Java/SpringBoot.
 From the admin-web website, registered administrators/employees can retrieve, display and edit data from the
 car-rental-v2 rest api endpoints and its connected database.
 From the customer-web website, enables the similar functions for customers (non-administrators). Different access rights
 etc. will be described hereafter.
 
-Note: car-rental-v1 is almost identical to this car-rental-v2, but the latter is with optional microservices only
-and used in the fullstack project)
+Note: this car-rental-v2 is almost identical to the car-rental-v1, but this car-rental-v2 project is:
+- with optional microservices
+- used in a fullstack project, see hereunder
 
 #### All projects belonging to the FULLSTACK car rental project can be found here:
 
