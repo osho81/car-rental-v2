@@ -16,7 +16,7 @@ Note: this car-rental-v2 is almost identical to the car-rental-v1, but this car-
 
 - [car-rental-v2 (this backend rest api project)](https://gitlab.com/car-rental-fullstack/car-rental-v2)
 - [admin-web (frontend js project)](https://gitlab.com/car-rental-fullstack/admin-web)
-- [customer-web (corresponding webpage for customers)](https://gitlab.com/car-rental-fullstack/customer-web)
+- [customer-web (frontend js project)](https://gitlab.com/car-rental-fullstack/customer-web)
 - Or see all related projects in the [GitLab project-group](https://gitlab.com/car-rental-fullstack)
 
 ##### Corporate styleguide used for these projects:
