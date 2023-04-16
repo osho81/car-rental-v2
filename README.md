@@ -8,7 +8,7 @@ car-rental-v2 rest api endpoints and its connected database.
 From the customer-web website, enables the similar functions for customers (non-administrators). Different access rights
 etc. will be described hereafter.
 
-Note: this car-rental-v2 is almost identical to the car-rental-v1, but this car-rental-v2 project is:
+Note that this car-rental-v2 is almost identical to the car-rental-v1, but this car-rental-v2 project is:
 - with optional microservices
 - used in a fullstack project, see hereunder
 
