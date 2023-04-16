@@ -46,53 +46,13 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     }
 
 
-    /////-------- UNCOMMENT WHEN USING KEYCLOAK ---------/////
-//    @Override
-//    public void configure(HttpSecurity http) throws Exception {
-//        super.configure(http);
-//        http
-//                .authorizeRequests()
-//
-//                // User access and action rights
-//                .antMatchers("/api/v1/cars").hasRole("user")
-//                .antMatchers("/api/v1/ordercar").hasRole("user")
-//                .antMatchers("/api/v1/updateorder").hasRole("user")
-//                .antMatchers("/api/v1/myorders").hasRole("user")
-//                .antMatchers("/api/v1/exchange").hasRole("user")
-//
-//                // Admin access and action rights
-//                .antMatchers("/api/v1/customers").hasRole("admin")
-//                .antMatchers("/api/v1/addcar").hasRole("admin")
-//                .antMatchers("/api/v1/deletecar").hasRole("admin")
-//                .antMatchers("/api/v1/updatecar").hasRole("admin")
-//                .antMatchers("/api/v1/cancelorder").hasRole("admin")
-//
-//                .antMatchers("/h2-console/**").permitAll() // For H2-console web view
-//
-//                .anyRequest().authenticated();
-//        http.csrf().disable();
-//
-//        http.headers().frameOptions().disable(); // For H2-console web view
-//
-//        http.cors(c ->{
-//            CorsConfigurationSource cs = request -> {
-//                CorsConfiguration cc = new CorsConfiguration();
-//                cc.setAllowedOrigins(List.of("http://127.0.0.1:5500", "http://localhost:5500"));
-//                cc.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-//                cc.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
-//                return cc;
-//            };
-//            c.configurationSource(cs);
-//        });
-//    }
-
-    ///-------- UNCOMMENT WHEN >NOT< USING KEYCLOAK ---------/////
+    ///-------- COMMENT WHEN >NOT< USING KEYCLOAK ---------/////
     @Override
     public void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http
                 .authorizeRequests()
-                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll() // For H2-console web view
 
                 // User permitted endpoints
                 // (Get car list & update order is partly needed for admin, according to frontend requirements)
