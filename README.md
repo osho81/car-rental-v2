@@ -43,6 +43,10 @@ Note that this car-rental-v2 is almost identical to the car-rental-v1, but this 
 For this project H2 database is used. There are two approaches, one in memory only, and one with enabled H2 db
 connection in intelliJ as well. In both cases the MockData.java automatically creates few mockdata records to the
 database.
+- If there is need for more mockdata records, execute the whole of part of the data.sql file.
+  - No customized schemas are used.
+  - If required, select TWRENTAL.PUBLIC as target data source/schema in data.sql run configurations.
+  - Alternatively, copy sql statements from the data.sql file and run in the H2 browser console.
 
 #### H2 in memory only
 
@@ -54,12 +58,9 @@ database.
 #### H2 approach for H2 console & intelliJ db connect
 
 - Enable #spring.datasource.url=jdbc:h2:file:/data/twrental;AUTO_SERVER=TRUE in application.properties file
-- (Optionally connect H2 db to intelliJ)
-- If there is need for more mockdata records, execute the whole of part of the data.sql file. 
-  - No customized schemas are used. 
-  - If required, select TWRENTAL.PUBLIC as target data source/schema in data.sql run configurations. 
-  - Alternatively, copy sql statements from the data.sql file and run in the H2 browser console.
+- Optionally connect H2 db to intelliJ
 
+#### Access H2 db in browser
 To see H2 data in browser console (http://localhost:9090/h2-console), be sure to select the correct JDBC url to log in
 to the console (see url in spring.datasource.url in application.properties file).
 
@@ -74,9 +75,10 @@ to the console (see url in spring.datasource.url in application.properties file)
 
 For login and access management, [Keycloak (Quarkus distribution)](https://www.keycloak.org/downloads) is employed. For
 the frontend (customer-web & admin-web) a Javascript adapter from the same source have been included in the project.
-Brief
-configuration description:
+<br>
 
+Configuration description:
+- In Keycloak admin console for Keycloak Quarkus) 19, 
 - Realm name: car-rental-realm
 - Client id: car-rental-v2
 - Valid post logout redirect URIs, relevant for e.g. VS Code live server:
@@ -84,7 +86,14 @@ configuration description:
     - http://127.0.0.1:5500/*
     - http://127.0.0.1:5501/* (in case use customer & admin web simultanous)
     - During development * as uri and web origin uri is sufficient.
-- Roles: admin & user
+- Roles: admin & user 
+<br>
+
+Starting Keycloak Quarkus 19:
+- in terminal: 
+  - navigate to ...\keycloak-19.0.3\bin 
+  - run the server with this command: kc.bat start-dev
+
 
 Authorization is validated using keycloak Bearer access token in the http requests.
 
