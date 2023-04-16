@@ -79,8 +79,9 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         http.cors(c -> {
             CorsConfigurationSource cs = request -> {
                 CorsConfiguration cc = new CorsConfiguration();
-                cc.setAllowedOrigins(List.of("http://127.0.0.1:5500", "http://localhost:5500",
-                        "http://127.0.0.1:5501", "http://localhost:5501"));
+                // Added private-IP http://192.168.0.153:5500 & 5051) to adjust for docker
+                cc.setAllowedOrigins(List.of("http://127.0.0.1:5500", "http://localhost:5500", "http://192.168.0.153:5500",
+                        "http://127.0.0.1:5501", "http://localhost:5501", "http://192.168.0.153:5501"));
                 cc.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
                 cc.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type", "Bearer"));
                 return cc;
