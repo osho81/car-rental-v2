@@ -8,8 +8,8 @@ car-rental-v2 rest api endpoints and its connected database.
 From the customer-web website, enables the similar functions for customers (non-administrators). Different access rights
 etc. will be described hereafter.
 
-Note that this car-rental-v2 is almost identical to the car-rental-v1, but this car-rental-v2 project is:
-- with optional microservices
+Note that this car-rental-v2 is almost identical to the car-rental (v1), but this car-rental-v2 project is:
+- with optional microservices, i.e. easier to use with or without related microservices
 - used in a fullstack project, see hereunder
 
 #### All projects belonging to the FULLSTACK car rental project can be found here:
@@ -26,7 +26,7 @@ Note that this car-rental-v2 is almost identical to the car-rental-v1, but this 
 ##### All projects belonging to the MICROSERVICE car rental, can be found here:
 
 - The microservice
-  aligned [car-rental-v1 (the V1 backend rest api project)](https://gitlab.com/car-rental-fullstack/car-rental-v1)
+  aligned car-rental (ADD LINK to github)
 - Microservice [api-gateway](https://github.com/osho81/car-rental-api-gateway)
 - Microservice for [rate exchange](https://github.com/osho81/car-rental-exchange-service)
 - Server [registry](https://github.com/osho81/car-rental-service-registry) for the already available and eventual more
@@ -41,23 +41,23 @@ Note that this car-rental-v2 is almost identical to the car-rental-v1, but this 
 ### DB & Mockdata
 
 For this project H2 database is used. There are two approaches, one in memory only, and one with enabled H2 db
-connection in intelliJ as well. In both cases the MockData.java automatically creates few mockdata records to the
+connection in intelliJ as well (db on local file). In both cases the MockData.java automatically creates few mockdata records to the
 database.
 - If there is need for more mockdata records, execute the whole of part of the data.sql file.
   - No customized schemas are used.
-  - If required, select TWRENTAL.PUBLIC as target data source/schema in data.sql run configurations.
+  - If required, select DBname.PUBLIC as target data source/schema in data.sql run configurations.
   - Alternatively, copy sql statements from the data.sql file and run in the H2 browser console.
 
 #### H2 in memory only
 
-- Enable spring.datasource.url=jdbc:h2:mem:twrental in application.properties file
+- Enable spring.datasource.url=jdbc:h2:mem:DBname in application.properties file
 - (Unconnect or ignore eventual intelliJ connected H2 db)
 - If there is need for more mockdata records, copy sql statements from the data.sql file and run in the H2 browser
   console.
 
 #### H2 approach for H2 console & intelliJ db connect
 
-- Enable #spring.datasource.url=jdbc:h2:file:/data/twrental;AUTO_SERVER=TRUE in application.properties file
+- Enable #spring.datasource.url=jdbc:h2:file:/data/DBname;AUTO_SERVER=TRUE in application.properties file
 - Optionally connect H2 db to intelliJ
 
 #### Access H2 db in browser
